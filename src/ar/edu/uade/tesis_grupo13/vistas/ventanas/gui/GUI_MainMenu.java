@@ -5,9 +5,13 @@
 package ar.edu.uade.tesis_grupo13.vistas.ventanas.gui;
 
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.beans.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.*;
 
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
@@ -16,6 +20,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
+import javax.swing.event.*;
 
 import ar.edu.uade.tesis_grupo13.controller.Controller_MainMenu;
 import ar.edu.uade.tesis_grupo13.vistas.ventanas.VistaMainMenu;
@@ -39,6 +44,19 @@ public class GUI_MainMenu extends JFrame {
 	private void menuSalirActionPerformed(ActionEvent e) {
 		((Controller_MainMenu)vistaPadre.getControlador()).salir();
 	}
+	
+	private void abrirMapaActionPerformed(ActionEvent e) {
+		// TODO add your code here
+	}
+
+	private void menuGrillaActionPerformed(ActionEvent e) {
+		((Controller_MainMenu)vistaPadre.getControlador()).toggleGrilla(menuGrilla.getState());
+	}
+
+	private void menuMapaOriginalActionPerformed(ActionEvent e) {
+		((Controller_MainMenu)vistaPadre.getControlador()).toggleOriginal(menuMapaOriginal.getState());
+	}
+
 
 	
 	private void initComponents() {		
@@ -49,6 +67,8 @@ public class GUI_MainMenu extends JFrame {
 		abrirMapa = new JMenuItem();
 		menuSalir = new JMenuItem();
 		menu2 = new JMenu();
+		menuGrilla = new JCheckBoxMenuItem();
+		menuMapaOriginal = new JCheckBoxMenuItem();
 		imagePanel = new GUI_MainPanel();
 
 		//======== this ========
@@ -58,13 +78,21 @@ public class GUI_MainMenu extends JFrame {
 		{
 
 			//======== menuBar1 ========
-			{				
+			{
+
 				//======== menu1 ========
 				{
-					menu1.setText("Archivo");					
+					menu1.setText("Archivo");
+					menu1.setMnemonic('A');
+
 					//---- abrirMapa ----
 					abrirMapa.setText("Abrir mapa...");
-					
+					abrirMapa.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							abrirMapaActionPerformed(e);
+						}
+					});
 					menu1.add(abrirMapa);
 					menu1.addSeparator();
 
@@ -83,13 +111,29 @@ public class GUI_MainMenu extends JFrame {
 				//======== menu2 ========
 				{
 					menu2.setText("Opciones");
+					menu2.setMnemonic('O');
+
+					//---- menuGrilla ----
+					menuGrilla.setText("Mostrar grilla");
+					menuGrilla.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							menuGrillaActionPerformed(e);
+						}
+					});
+					menu2.add(menuGrilla);
+
+					//---- menuMapaOriginal ----
+					menuMapaOriginal.setText("Ver Mapa Original");
+					menuMapaOriginal.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							menuMapaOriginalActionPerformed(e);
+						}
+					});
+					menu2.add(menuMapaOriginal);
 				}
 				menuBar1.add(menu2);
-			}
-
-			//======== imagePanel ========
-			{
-				imagePanel.setLayout(new GridLayout(1, 1));
 			}
 
 			GroupLayout panel1Layout = new GroupLayout(panel1);
@@ -118,13 +162,18 @@ public class GUI_MainMenu extends JFrame {
 	private JMenuItem abrirMapa;
 	private JMenuItem menuSalir;
 	private JMenu menu2;
+	private JCheckBoxMenuItem menuGrilla;
+	private JCheckBoxMenuItem menuMapaOriginal;
 	private GUI_MainPanel imagePanel;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
-	
-	
-	public void setImage(BufferedImage img) {		
-		imagePanel.setImage(img);		
-	}		
+				
+	public void addLayer(String layerName, BufferedImage image) {
+		imagePanel.addLayer(layerName, image);		
+	}
+
+	public void removeLayer(String layerName) {
+		imagePanel.removeLayer(layerName);
+	}
 		
 	
 }

@@ -7,19 +7,27 @@
  */
 package ar.edu.uade.tesis_grupo13.vistas.framework.controlador;
 
+import ar.edu.uade.tesis_grupo13.vistas.framework.modelo.Modelo;
 import ar.edu.uade.tesis_grupo13.vistas.framework.vista.Vista;
 
 
 public abstract class Controlador {
-	Vista vista;	
+	Vista vista;
+	Modelo modelo;	
 	
-	protected Controlador(Vista vis) {
-		vista = vis;		
+	protected Controlador(Modelo mod, Vista vis) {
+		vista = vis;
+		modelo = mod;
+		mod.setVista(vis);
 		vista.addControlador(this);
 	}	
 	
 	public Vista getVista() {
 		return vista;
+	}
+	
+	public Modelo getModelo() {
+		return modelo;
 	}
 	
 }
