@@ -57,6 +57,10 @@ public class GUI_MainMenu extends JFrame {
 		((Controller_MainMenu)vistaPadre.getControlador()).toggleOriginal(menuMapaOriginal.getState());
 	}
 
+	private void menuMostrarGrafoActionPerformed(ActionEvent e) {
+		((Controller_MainMenu)vistaPadre.getControlador()).toggleGrafo(menuMostrarGrafo.getState());
+	}
+
 
 	
 	private void initComponents() {		
@@ -69,6 +73,7 @@ public class GUI_MainMenu extends JFrame {
 		menu2 = new JMenu();
 		menuGrilla = new JCheckBoxMenuItem();
 		menuMapaOriginal = new JCheckBoxMenuItem();
+		menuMostrarGrafo = new JCheckBoxMenuItem();
 		imagePanel = new GUI_MainPanel();
 
 		//======== this ========
@@ -132,6 +137,16 @@ public class GUI_MainMenu extends JFrame {
 						}
 					});
 					menu2.add(menuMapaOriginal);
+
+					//---- menuMostrarGrafo ----
+					menuMostrarGrafo.setText("Mostrar grafo");
+					menuMostrarGrafo.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							menuMostrarGrafoActionPerformed(e);
+						}
+					});
+					menu2.add(menuMostrarGrafo);
 				}
 				menuBar1.add(menu2);
 			}
@@ -164,6 +179,7 @@ public class GUI_MainMenu extends JFrame {
 	private JMenu menu2;
 	private JCheckBoxMenuItem menuGrilla;
 	private JCheckBoxMenuItem menuMapaOriginal;
+	private JCheckBoxMenuItem menuMostrarGrafo;
 	private GUI_MainPanel imagePanel;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 				

@@ -3,8 +3,6 @@ package ar.edu.uade.tesis_grupo13.vistas.ventanas.gui;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.swing.JPanel;
 
@@ -13,7 +11,7 @@ public class GUI_MainPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private HashMap<String, BufferedImage> layers = new HashMap<String, BufferedImage>();
-	private String[] layerOrder = {"mapaGrafo", "base", "grid"};
+	private String[] layerOrder = {"mapaGrafo", "base", "grafo", "grid"};
 
 	@Override
 	protected void paintComponent(Graphics g) {	

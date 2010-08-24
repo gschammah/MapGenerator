@@ -1,9 +1,6 @@
 package ar.edu.uade.tesis_grupo13.vistas.ventanas;
 
-import java.awt.AlphaComposite;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 import ar.edu.uade.tesis_grupo13.vistas.framework.vista.Vista;
 import ar.edu.uade.tesis_grupo13.vistas.ventanas.gui.GUI_MainMenu;
@@ -26,14 +23,6 @@ public class VistaMainMenu extends Vista {
 
 	public void salir() {		
 		vistaGrafica.dispose();
-	}
-
-	public void setGrilla(BufferedImage grilla, boolean muestraGrilla) {
-		if (muestraGrilla) {
-			addLayer("grid", grilla);
-		} else {
-			removeLayer("grid");
-		}
 	}
 
 	public void removeLayer(String layer) {
