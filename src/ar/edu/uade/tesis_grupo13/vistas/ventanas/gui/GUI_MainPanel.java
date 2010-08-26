@@ -1,36 +1,76 @@
 package ar.edu.uade.tesis_grupo13.vistas.ventanas.gui;
 
-import java.awt.Graphics;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
-import javax.swing.JPanel;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.Scrollable;
+import javax.swing.SwingConstants;
 
-public class GUI_MainPanel extends JPanel {
+public class GUI_MainPanel extends JLabel implements Scrollable {
 		
 	private static final long serialVersionUID = 1L;
 	
-	private HashMap<String, BufferedImage> layers = new HashMap<String, BufferedImage>();
-	private String[] layerOrder = {"mapaGrafo", "base", "grafo", "grid"};
-
-	@Override
-	protected void paintComponent(Graphics g) {	
-		super.paintComponent(g);
-		repaintImage(g);		
-	}		
-
-	private void repaintImage(Graphics g) {	
+	private int maxUnitIncrement = 1;
+	private Dimension imageSize;
 		
-		for (String layer: layerOrder) {						
+	private HashMap<String, BufferedImage> layers = new HashMap<String, BufferedImage>();
+	private HashMap<String, ImageIcon> layerBuffer = new HashMap<String, ImageIcon>();
+	private String[] layerOrder = {"mapaGrafo", "base", "bordes", "grafo", "grid"};		
+	
+	private String getLayerString() {								
+		
+		ArrayList<String> keys = new ArrayList<String>(layers.keySet());
+		
+		if (keys.size() > 0) { 
+		
+			Collections.sort(keys);
+			StringBuilder result = new StringBuilder(keys.get(0));
 			
-			try {
-				if (layers.containsKey(layer)) {
-					g.drawImage(layers.get(layer), 0, 0, null);
-				}
-			} catch (NullPointerException e) {
-				
-			}		
-		}		
+			for (int i=1; i<keys.size(); i++) {
+				result.append("+").append(keys.get(i));
+			}
+			
+			return result.toString();
+		} else {
+			return null;
+		}
+	}
+
+	private void redibujar() {
+		
+		String layerString = getLayerString();
+		setAlignmentX(CENTER_ALIGNMENT);
+		setAlignmentY(TOP_ALIGNMENT);
+		
+		if (layerBuffer.containsKey(layerString)) {
+			
+			setIcon(layerBuffer.get(layerString));
+			System.err.println("dibujando buffer: " + layerString);
+			
+		} else if (layers.size() > 0) {
+			
+			BufferedImage tempImg = new BufferedImage(imageSize.width, imageSize.height, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D gTemp = tempImg.createGraphics();
+			
+			for (String layer: layerOrder) {													
+				if (layers.containsKey(layer)) {		
+					gTemp.drawImage(layers.get(layer), 0, 0, null);
+					layerBuffer.put(layerString, new ImageIcon(layers.get(layer)));
+				}					
+			}	
+			
+			layerBuffer.put(layerString, new ImageIcon(tempImg));
+			setIcon(layerBuffer.get(layerString));
+			System.err.println("dibujando nuevo: " + layerString);
+			
+		}
 		
 	}
 
@@ -39,15 +79,72 @@ public class GUI_MainPanel extends JPanel {
 	}
 
 	
-	public void addLayer(String layerName, BufferedImage image) {		
+	public void addLayer(String layerName, BufferedImage image) {
+		if (layerName.equals("mapaGrafo")) {
+			imageSize = new Dimension(image.getWidth(), image.getHeight());			
+		}
 		layers.put(layerName, image);
-		repaint();
+		redibujar();
 	}
 
 	public void removeLayer(String layerName) {		
 		layers.remove(layerName);
-		repaint();
+		redibujar();
 	}
+
+	@Override
+	public Dimension getPreferredScrollableViewportSize() {
+		return getPreferredSize();
+	}
+
+	@Override
+	   public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+        if (orientation == SwingConstants.HORIZONTAL)
+            return visibleRect.width - maxUnitIncrement;
+        else
+            return visibleRect.height - maxUnitIncrement;
+    }
+
+	@Override
+	public boolean getScrollableTracksViewportHeight() {	
+		return false;
+	}
+
+	@Override
+	public boolean getScrollableTracksViewportWidth() {
+		return false;
+	}
+
+	@Override
+	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+
+        int currentPosition = 0;
+        if (orientation == SwingConstants.HORIZONTAL)
+            currentPosition = visibleRect.x;
+        else
+            currentPosition = visibleRect.y;
+
+        if (direction < 0) {
+            int newPosition = currentPosition - (currentPosition / maxUnitIncrement) * maxUnitIncrement;
+            return (newPosition == 0) ? maxUnitIncrement : newPosition;
+        } else {
+            return ((currentPosition / maxUnitIncrement) + 1) * maxUnitIncrement - currentPosition;
+        }
+    }
+	
+	public Dimension getImageSize() {
+		return imageSize;
+	}
+
+	public void setImageSize(Dimension imageSize) {
+		this.imageSize = imageSize;
+	}
+
+	public void clearLayers() {		
+		layerBuffer.clear();
+		layers.clear();
+	}
+
 		
 	
 }

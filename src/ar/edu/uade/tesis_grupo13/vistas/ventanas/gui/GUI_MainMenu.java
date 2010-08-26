@@ -5,24 +5,32 @@
 package ar.edu.uade.tesis_grupo13.vistas.ventanas.gui;
 
 import java.awt.GridLayout;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
-import java.beans.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.swing.*;
+import java.io.File;
 
 import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.LayoutStyle;
-import javax.swing.event.*;
+import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
+import javax.swing.border.SoftBevelBorder;
 
 import ar.edu.uade.tesis_grupo13.controller.Controller_MainMenu;
+import ar.edu.uade.tesis_grupo13.modelo.grafo.CoordenadaSoftware;
 import ar.edu.uade.tesis_grupo13.vistas.ventanas.VistaMainMenu;
 
 /**
@@ -45,8 +53,13 @@ public class GUI_MainMenu extends JFrame {
 		((Controller_MainMenu)vistaPadre.getControlador()).salir();
 	}
 	
-	private void abrirMapaActionPerformed(ActionEvent e) {
-		// TODO add your code here
+	private void abrirMapaActionPerformed(ActionEvent e) {		
+		JFileChooser fc = new JFileChooser();
+		fc.showOpenDialog(this);
+		File selFile = fc.getSelectedFile();
+		if (selFile != null) {
+			((Controller_MainMenu)vistaPadre.getControlador()).cargarImagen(selFile.getAbsolutePath());
+		}
 	}
 
 	private void menuGrillaActionPerformed(ActionEvent e) {
@@ -60,6 +73,23 @@ public class GUI_MainMenu extends JFrame {
 	private void menuMostrarGrafoActionPerformed(ActionEvent e) {
 		((Controller_MainMenu)vistaPadre.getControlador()).toggleGrafo(menuMostrarGrafo.getState());
 	}
+	
+	private void menuMostrarBordesActionPerformed(ActionEvent e) {
+		((Controller_MainMenu)vistaPadre.getControlador()).toggleBordes(menuMostrarBordes.getState());
+	}
+
+	private void imagePanelMouseClicked(MouseEvent e) {
+		((Controller_MainMenu)vistaPadre.getControlador()).selectGrid(e.getX(), e.getY());		
+	}
+
+	private void imagePanelMouseMoved(MouseEvent e) {
+		try {
+			CoordenadaSoftware coord = ((Controller_MainMenu)vistaPadre.getControlador()).getGridCoord(e.getX(), e.getY());		
+			setCoord(coord);
+		} catch (NullPointerException exc) {}
+	}
+
+	
 
 
 	
@@ -74,7 +104,13 @@ public class GUI_MainMenu extends JFrame {
 		menuGrilla = new JCheckBoxMenuItem();
 		menuMapaOriginal = new JCheckBoxMenuItem();
 		menuMostrarGrafo = new JCheckBoxMenuItem();
+		menuMostrarBordes = new JCheckBoxMenuItem();
+		statusBar = new JPanel();
+		lblCoord = new JLabel();
+		scrollBarImage = new JScrollPane();
 		imagePanel = new GUI_MainPanel();
+		toolBar = new JToolBar();
+		btnStartPoint = new JButton();
 
 		//======== this ========
 		setLayout(new GridLayout());
@@ -92,6 +128,7 @@ public class GUI_MainMenu extends JFrame {
 
 					//---- abrirMapa ----
 					abrirMapa.setText("Abrir mapa...");
+					abrirMapa.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_MASK));
 					abrirMapa.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -120,6 +157,7 @@ public class GUI_MainMenu extends JFrame {
 
 					//---- menuGrilla ----
 					menuGrilla.setText("Mostrar grilla");
+					menuGrilla.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_MASK));
 					menuGrilla.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -130,6 +168,7 @@ public class GUI_MainMenu extends JFrame {
 
 					//---- menuMapaOriginal ----
 					menuMapaOriginal.setText("Ver Mapa Original");
+					menuMapaOriginal.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK));
 					menuMapaOriginal.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -140,6 +179,7 @@ public class GUI_MainMenu extends JFrame {
 
 					//---- menuMostrarGrafo ----
 					menuMostrarGrafo.setText("Mostrar grafo");
+					menuMostrarGrafo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_MASK));
 					menuMostrarGrafo.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -147,23 +187,92 @@ public class GUI_MainMenu extends JFrame {
 						}
 					});
 					menu2.add(menuMostrarGrafo);
+
+					//---- menuMostrarBordes ----
+					menuMostrarBordes.setText("Mostrar bordes");
+					menuMostrarBordes.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_MASK));
+					menuMostrarBordes.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							menuMostrarBordesActionPerformed(e);
+						}
+					});
+					menu2.add(menuMostrarBordes);
 				}
 				menuBar1.add(menu2);
+			}
+
+			//======== statusBar ========
+			{
+				statusBar.setBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED));
+
+				//---- lblCoord ----
+				lblCoord.setText("x:0 y:0");
+
+				GroupLayout statusBarLayout = new GroupLayout(statusBar);
+				statusBar.setLayout(statusBarLayout);
+				statusBarLayout.setHorizontalGroup(
+					statusBarLayout.createParallelGroup()
+						.addGroup(statusBarLayout.createSequentialGroup()
+							.addComponent(lblCoord, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap(677, Short.MAX_VALUE))
+				);
+				statusBarLayout.setVerticalGroup(
+					statusBarLayout.createParallelGroup()
+						.addComponent(lblCoord, GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+				);
+			}
+
+			//======== scrollBarImage ========
+			{
+
+				//---- imagePanel ----
+				imagePanel.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						imagePanelMouseClicked(e);
+					}
+				});
+				imagePanel.addMouseMotionListener(new MouseMotionAdapter() {
+					@Override
+					public void mouseMoved(MouseEvent e) {
+						imagePanelMouseMoved(e);
+					}
+				});
+				scrollBarImage.setViewportView(imagePanel);
+			}
+
+			//======== toolBar ========
+			{
+				toolBar.setFloatable(false);
+
+				//---- btnStartPoint ----
+				btnStartPoint.setText("Start");
+				toolBar.add(btnStartPoint);
 			}
 
 			GroupLayout panel1Layout = new GroupLayout(panel1);
 			panel1.setLayout(panel1Layout);
 			panel1Layout.setHorizontalGroup(
 				panel1Layout.createParallelGroup()
-					.addComponent(menuBar1, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
-					.addComponent(imagePanel, GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+					.addGroup(panel1Layout.createSequentialGroup()
+						.addGap(0, 0, 0)
+						.addGroup(panel1Layout.createParallelGroup()
+							.addComponent(toolBar, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 770, Short.MAX_VALUE)
+							.addComponent(scrollBarImage, GroupLayout.DEFAULT_SIZE, 770, Short.MAX_VALUE)
+							.addComponent(menuBar1, GroupLayout.DEFAULT_SIZE, 770, Short.MAX_VALUE)
+							.addComponent(statusBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
 			);
 			panel1Layout.setVerticalGroup(
 				panel1Layout.createParallelGroup()
 					.addGroup(panel1Layout.createSequentialGroup()
 						.addComponent(menuBar1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(imagePanel, GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE))
+						.addGap(0, 0, 0)
+						.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+						.addGap(3, 3, 3)
+						.addComponent(scrollBarImage, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+						.addGap(0, 0, 0)
+						.addComponent(statusBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 			);
 		}
 		add(panel1);
@@ -180,15 +289,34 @@ public class GUI_MainMenu extends JFrame {
 	private JCheckBoxMenuItem menuGrilla;
 	private JCheckBoxMenuItem menuMapaOriginal;
 	private JCheckBoxMenuItem menuMostrarGrafo;
+	private JCheckBoxMenuItem menuMostrarBordes;
+	private JPanel statusBar;
+	private JLabel lblCoord;
+	private JScrollPane scrollBarImage;
 	private GUI_MainPanel imagePanel;
+	private JToolBar toolBar;
+	private JButton btnStartPoint;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
+	
+	public GUI_MainPanel getImagePanel() {
+		return imagePanel;
+	}
 				
 	public void addLayer(String layerName, BufferedImage image) {
-		imagePanel.addLayer(layerName, image);		
+		imagePanel.addLayer(layerName, image);				
 	}
 
 	public void removeLayer(String layerName) {
 		imagePanel.removeLayer(layerName);
+	}
+	
+	public void setCoord(CoordenadaSoftware coord) {
+		lblCoord.setText("X: " + coord.getMatrizX() + "; Y: " + coord.getMatrizY());		
+	}
+
+
+	public void clearLayers() {		
+		imagePanel.clearLayers();
 	}
 		
 	

@@ -22,11 +22,11 @@
          <class>org.jdesktop.layout.GroupLayout</class>
          <void method="setProperty">
           <string>$horizontalGroup</string>
-          <string>par l {comp menuBar1::t::508:x, comp imagePanel::l::508:x}</string>
+          <string>par l {seq l {space :p:0:p, par l {comp toolBar::t::770:x, comp scrollBarImage::l::770:x, comp menuBar1::l::770:x:2, comp statusBar::l:::x}}}</string>
          </void>
          <void method="setProperty">
           <string>$verticalGroup</string>
-          <string>par l {seq l {comp menuBar1:::p::p, space :::p, comp imagePanel::::306:x}}</string>
+          <string>par l {seq {comp menuBar1:::p::p, space :p:0:p, comp toolBar:::p:24:p, space :p:3:p, comp scrollBarImage::::280:x, space :p:0:p, comp statusBar:::p::p}}</string>
          </void>
         </object>
         <void property="name">
@@ -64,6 +64,14 @@
               <void method="setProperty">
                <string>text</string>
                <string>Abrir mapa...</string>
+              </void>
+              <void method="setProperty">
+               <string>accelerator</string>
+               <object class="javax.swing.KeyStroke" method="getKeyStroke">
+                <int>65</int>
+                <int>130</int>
+                <boolean>false</boolean>
+               </object>
               </void>
               <void property="name">
                <string>abrirMapa</string>
@@ -132,6 +140,14 @@
                <string>text</string>
                <string>Mostrar grilla</string>
               </void>
+              <void method="setProperty">
+               <string>accelerator</string>
+               <object class="javax.swing.KeyStroke" method="getKeyStroke">
+                <int>71</int>
+                <int>130</int>
+                <boolean>false</boolean>
+               </object>
+              </void>
               <void property="name">
                <string>menuGrilla</string>
               </void>
@@ -151,6 +167,14 @@
               <void method="setProperty">
                <string>text</string>
                <string>Ver Mapa Original</string>
+              </void>
+              <void method="setProperty">
+               <string>accelerator</string>
+               <object class="javax.swing.KeyStroke" method="getKeyStroke">
+                <int>79</int>
+                <int>130</int>
+                <boolean>false</boolean>
+               </object>
               </void>
               <void property="name">
                <string>menuMapaOriginal</string>
@@ -172,6 +196,14 @@
                <string>text</string>
                <string>Mostrar grafo</string>
               </void>
+              <void method="setProperty">
+               <string>accelerator</string>
+               <object class="javax.swing.KeyStroke" method="getKeyStroke">
+                <int>77</int>
+                <int>130</int>
+                <boolean>false</boolean>
+               </object>
+              </void>
               <void property="name">
                <string>menuMostrarGrafo</string>
               </void>
@@ -185,15 +217,138 @@
               </void>
              </object>
             </void>
+            <void method="add">
+             <object class="com.jformdesigner.model.FormComponent">
+              <string>javax.swing.JCheckBoxMenuItem</string>
+              <void method="setProperty">
+               <string>text</string>
+               <string>Mostrar bordes</string>
+              </void>
+              <void method="setProperty">
+               <string>accelerator</string>
+               <object class="javax.swing.KeyStroke" method="getKeyStroke">
+                <int>66</int>
+                <int>130</int>
+                <boolean>false</boolean>
+               </object>
+              </void>
+              <void property="name">
+               <string>menuMostrarBordes</string>
+              </void>
+              <void method="addEvent">
+               <object class="com.jformdesigner.model.FormEvent">
+                <string>java.awt.event.ActionListener</string>
+                <string>actionPerformed</string>
+                <string>menuMostrarBordesActionPerformed</string>
+                <boolean>true</boolean>
+               </object>
+              </void>
+             </object>
+            </void>
            </object>
           </void>
          </object>
         </void>
         <void method="add">
-         <object class="com.jformdesigner.model.FormComponent">
-          <string>ar.edu.uade.tesis_grupo13.vistas.ventanas.gui.GUI_MainPanel</string>
+         <object class="com.jformdesigner.model.FormContainer">
+          <string>javax.swing.JPanel</string>
+          <object class="com.jformdesigner.model.FormLayoutManager">
+           <class>org.jdesktop.layout.GroupLayout</class>
+           <void method="setProperty">
+            <string>$horizontalGroup</string>
+            <string>par l {seq l {comp lblCoord:::p:87:p, space ::677:x}}</string>
+           </void>
+           <void method="setProperty">
+            <string>$verticalGroup</string>
+            <string>par l {comp lblCoord::l::20:x}</string>
+           </void>
+          </object>
+          <void method="setProperty">
+           <string>border</string>
+           <object class="javax.swing.border.SoftBevelBorder">
+            <int>1</int>
+            <null/>
+            <null/>
+            <null/>
+            <null/>
+           </object>
+          </void>
           <void property="name">
-           <string>imagePanel</string>
+           <string>statusBar</string>
+          </void>
+          <void method="add">
+           <object class="com.jformdesigner.model.FormComponent">
+            <string>javax.swing.JLabel</string>
+            <void method="setProperty">
+             <string>text</string>
+             <string>x:0 y:0</string>
+            </void>
+            <void property="name">
+             <string>lblCoord</string>
+            </void>
+           </object>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.jformdesigner.model.FormContainer">
+          <string>javax.swing.JScrollPane</string>
+          <object class="com.jformdesigner.model.FormLayoutManager">
+           <class>javax.swing.JScrollPane</class>
+          </object>
+          <void property="name">
+           <string>scrollBarImage</string>
+          </void>
+          <void method="add">
+           <object class="com.jformdesigner.model.FormComponent">
+            <string>ar.edu.uade.tesis_grupo13.vistas.ventanas.gui.GUI_MainPanel</string>
+            <void property="name">
+             <string>imagePanel</string>
+            </void>
+            <void method="addEvent">
+             <object class="com.jformdesigner.model.FormEvent">
+              <string>java.awt.event.MouseListener</string>
+              <string>mouseClicked</string>
+              <string>imagePanelMouseClicked</string>
+              <boolean>true</boolean>
+             </object>
+            </void>
+            <void method="addEvent">
+             <object class="com.jformdesigner.model.FormEvent">
+              <string>java.awt.event.MouseMotionListener</string>
+              <string>mouseMoved</string>
+              <string>imagePanelMouseMoved</string>
+              <boolean>true</boolean>
+             </object>
+            </void>
+           </object>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.jformdesigner.model.FormContainer">
+          <string>javax.swing.JToolBar</string>
+          <object class="com.jformdesigner.model.FormLayoutManager">
+           <class>javax.swing.JToolBar</class>
+          </object>
+          <void method="setProperty">
+           <string>floatable</string>
+           <boolean>false</boolean>
+          </void>
+          <void property="name">
+           <string>toolBar</string>
+          </void>
+          <void method="add">
+           <object class="com.jformdesigner.model.FormComponent">
+            <string>javax.swing.JButton</string>
+            <void method="setProperty">
+             <string>text</string>
+             <string>Start</string>
+            </void>
+            <void property="name">
+             <string>btnStartPoint</string>
+            </void>
+           </object>
           </void>
          </object>
         </void>
@@ -212,8 +367,8 @@
       <void method="setProperty">
        <string>size</string>
        <object class="java.awt.Dimension">
-        <int>508</int>
-        <int>339</int>
+        <int>770</int>
+        <int>360</int>
        </object>
       </void>
      </object>

@@ -2,21 +2,22 @@ package ar.edu.uade.tesis_grupo13.modelo;
 
 import java.awt.Color;
 
+import ar.edu.uade.tesis_grupo13.modelo.grafo.Grafo;
 import ar.edu.uade.tesis_grupo13.vistas.framework.modelo.Modelo;
 
 public class MapMaker extends Modelo{
 	
 	private Imagen imagen;
 	private boolean[][] matrizParedes;
-
-	public boolean[][] getMatrizParedes() {
-		return matrizParedes;
-	}
-
-	public MapMaker() {		
-	}		
+	private Grafo grafo;
 	
-	public void generarMatriz() {
+	public MapMaker() {}
+
+	public Grafo getGrafo() {
+		return grafo;
+	}	
+	
+	private void generarMatrizParedes() {
 		
 		int w = imagen.getWidth();
 		int h = imagen.getHeight();
@@ -35,6 +36,37 @@ public class MapMaker extends Modelo{
 			}
 		}			
 	}
+	
+	public boolean isBorder(int x, int y) {			
+		
+		if (x >= matrizParedes[0].length || y >= matrizParedes.length) {
+			return false;
+		}
+		
+		if (matrizParedes[y][x]) {
+			return false;
+		}		 
+		
+		int startx = x-1;
+		int endx = x+1;
+		int starty = y-1;
+		int endy = y+1;
+		
+		if (startx < 0) {startx = 0;}
+		if (starty < 0) {starty = 0;}
+		if (endx == matrizParedes[0].length) {endx = x;}
+		if (endy == matrizParedes.length) {endy = y;}					
+		
+		for (int j = starty; j <= endy; j++) {
+			for (int i = startx; i <= endx; i++) {				
+				if (matrizParedes[j][i]) {
+					return true;
+				}
+			}
+		}		
+		
+		return false;
+	}
 
 	public Imagen getImagen() {
 		return imagen;
@@ -42,7 +74,13 @@ public class MapMaker extends Modelo{
 
 	public void setImagen(Imagen imagen) {
 		this.imagen = imagen;
-	}		
+		this.generarMatrizParedes();
+		this.grafo = new Grafo(this);
+	}	
+	
+	public boolean[][] getMatrizParedes() {
+		return matrizParedes;
+	}
 
 	
 }

@@ -12,7 +12,7 @@ public class VistaMainMenu extends Vista {
 	public VistaMainMenu() {
 
 		vistaGrafica = new GUI_MainMenu(this);
-		vistaGrafica.setSize(800, 600);
+		vistaGrafica.setSize(1024, 768);
 		this.centrarVista(vistaGrafica);		
 		vistaGrafica.setVisible(true);
 	}
@@ -32,5 +32,9 @@ public class VistaMainMenu extends Vista {
 	public void addLayer(String layer, BufferedImage img) {
 		vistaGrafica.addLayer(layer, img);	
 	}
+
+	public void clearLayers() {
+		vistaGrafica.clearLayers();
+	}	
 
 }
