@@ -1,5 +1,6 @@
 package ar.edu.uade.tesis_grupo13.controller;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -236,7 +237,7 @@ public class Controller_MainMenu extends Controlador {
 		}
 	}
 	
-	public BufferedImage generarCamino(ArrayList<Coordenada> camino) {
+	public BufferedImage generarCamino(ArrayList<Coordenada> camino) {				
 
 		int w = modelo.getImagen().getWidth();
 		int h = modelo.getImagen().getHeight();
@@ -245,11 +246,13 @@ public class Controller_MainMenu extends Controlador {
 		Graphics2D g = imagen.createGraphics();
 		
 		g.setColor(Color.GREEN);
-
-		for (Coordenada coord : camino) {
-			g.fillRect((coord.getMatrizX() * 10), (coord.getMatrizY() * 10), 10, 10);
+		g.setStroke(new BasicStroke(2));
+		
+		for (int i = 0; i < camino.size()-1; i++) {
+			g.drawLine((camino.get(i).getMatrizX() * 10) + 4, (camino.get(i).getMatrizY() * 10) + 4, 
+					   (camino.get(i+1).getMatrizX() * 10) + 4, (camino.get(i+1).getMatrizY() * 10) + 4);
 		}
-
+		
 		return imagen;
 	}
 	
