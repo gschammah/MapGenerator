@@ -245,6 +245,34 @@
               </void>
              </object>
             </void>
+            <void method="add">
+             <object class="com.jformdesigner.model.FormComponent">
+              <string>javax.swing.JCheckBoxMenuItem</string>
+              <void method="setProperty">
+               <string>text</string>
+               <string>Mostrar Camino</string>
+              </void>
+              <void method="setProperty">
+               <string>accelerator</string>
+               <object class="javax.swing.KeyStroke" method="getKeyStroke">
+                <int>80</int>
+                <int>130</int>
+                <boolean>false</boolean>
+               </object>
+              </void>
+              <void property="name">
+               <string>menuMostrarCamino</string>
+              </void>
+              <void method="addEvent">
+               <object class="com.jformdesigner.model.FormEvent">
+                <string>java.awt.event.ActionListener</string>
+                <string>actionPerformed</string>
+                <string>menuMostrarCaminoActionPerformed</string>
+                <boolean>true</boolean>
+               </object>
+              </void>
+             </object>
+            </void>
            </object>
           </void>
          </object>
@@ -296,6 +324,14 @@
           <object class="com.jformdesigner.model.FormLayoutManager">
            <class>javax.swing.JScrollPane</class>
           </object>
+          <void method="addEvent">
+           <object class="com.jformdesigner.model.FormEvent">
+            <string>java.awt.event.MouseListener</string>
+            <string>mouseClicked</string>
+            <string>scrollBarImageMouseClicked</string>
+            <boolean>true</boolean>
+           </object>
+          </void>
           <void property="name">
            <string>scrollBarImage</string>
           </void>
@@ -343,10 +379,18 @@
             <string>javax.swing.JButton</string>
             <void method="setProperty">
              <string>text</string>
-             <string>Start</string>
+             <string>Calcular Ruta</string>
             </void>
             <void property="name">
-             <string>btnStartPoint</string>
+             <string>btnCalcularRuta</string>
+            </void>
+            <void method="addEvent">
+             <object class="com.jformdesigner.model.FormEvent">
+              <string>java.awt.event.ActionListener</string>
+              <string>actionPerformed</string>
+              <string>btnCalcularRutaActionPerformed</string>
+              <boolean>true</boolean>
+             </object>
             </void>
            </object>
           </void>

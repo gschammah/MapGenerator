@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -154,6 +155,14 @@ public class Controller_MainMenu extends Controlador {
 		}
 				
 	}
+	
+	public void togglePath(boolean mostrar) {						
+		if (mostrar && layers.get("path") != null) {
+			vista.addLayer("path", layers.get("path"));
+		} else {
+			vista.removeLayer("path");		
+		}				
+	}
 
 	private BufferedImage generarGrafo() {
 		
@@ -195,14 +204,68 @@ public class Controller_MainMenu extends Controlador {
 		return mapaGrafo;
 	}
 
-	public void selectGrid(int x, int y) {		
-				
-	}
 
-	public CoordenadaSoftware getGridCoord(int x, int y) throws NullPointerException {		
+	public CoordenadaSoftware getGridCoord(int x, int y) throws NullPointerException {								
+		
 		currentCoord.setX(x);
 		currentCoord.setY(y);
+				
 		return currentCoord;
+	}
+
+	public void setStartPoint(int x, int y) {
+		CoordenadaSoftware coord = new CoordenadaSoftware(x, y);
+		modelo.getGrafo().setStartPoint(coord);
+		vista.addLayer("startPoint", generarBox(coord.getMatrizX(), coord.getMatrizY(), Color.GREEN));		
+	}
+
+	public void setEndPoint(int x, int y) {
+		CoordenadaSoftware coord = new CoordenadaSoftware(x, y);
+		modelo.getGrafo().setEndPoint(coord);
+		vista.addLayer("endPoint", generarBox(coord.getMatrizX(), coord.getMatrizY(), Color.RED));
+	}
+
+	public void calcularRuta() {
+		ArrayList<Coordenada> camino = modelo.getGrafo().calcularCamino();
+		BufferedImage caminoImage = generarCamino(camino);
+		layers.put("path", caminoImage);
+		vista.addLayer("path", caminoImage);
+		
+		for (Coordenada coordenada : camino) {
+			System.out.println(coordenada.getMatrizX() + ", " + coordenada.getMatrizY());
+		}
+	}
+	
+	public BufferedImage generarCamino(ArrayList<Coordenada> camino) {
+
+		int w = modelo.getImagen().getWidth();
+		int h = modelo.getImagen().getHeight();
+
+		BufferedImage imagen = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = imagen.createGraphics();
+		
+		g.setColor(Color.GREEN);
+
+		for (Coordenada coord : camino) {
+			g.fillRect((coord.getMatrizX() * 10), (coord.getMatrizY() * 10), 10, 10);
+		}
+
+		return imagen;
+	}
+	
+	public BufferedImage generarBox(int x, int y, Color color) {
+
+		int w = modelo.getImagen().getWidth();
+		int h = modelo.getImagen().getHeight();
+
+		BufferedImage imagen = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = imagen.createGraphics();
+		
+		g.setColor(color);
+		
+		g.fillRect((x * 10), (y * 10), 10, 10);		
+
+		return imagen;
 	}
 
 }

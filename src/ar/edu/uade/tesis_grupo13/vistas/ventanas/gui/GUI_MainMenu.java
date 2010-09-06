@@ -4,6 +4,7 @@
 
 package ar.edu.uade.tesis_grupo13.vistas.ventanas.gui;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -79,7 +80,11 @@ public class GUI_MainMenu extends JFrame {
 	}
 
 	private void imagePanelMouseClicked(MouseEvent e) {
-		((Controller_MainMenu)vistaPadre.getControlador()).selectGrid(e.getX(), e.getY());		
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			((Controller_MainMenu)vistaPadre.getControlador()).setStartPoint(e.getX(), e.getY());
+		} else {
+			((Controller_MainMenu)vistaPadre.getControlador()).setEndPoint(e.getX(), e.getY());
+		}
 	}
 
 	private void imagePanelMouseMoved(MouseEvent e) {
@@ -87,6 +92,26 @@ public class GUI_MainMenu extends JFrame {
 			CoordenadaSoftware coord = ((Controller_MainMenu)vistaPadre.getControlador()).getGridCoord(e.getX(), e.getY());		
 			setCoord(coord);
 		} catch (NullPointerException exc) {}
+	}
+
+	private void btnStartPointActionPerformed(ActionEvent e) {
+		((Controller_MainMenu)vistaPadre.getControlador()).setStartPoint(4,16);
+	}
+
+	private void btnEndPointActionPerformed(ActionEvent e) {
+		((Controller_MainMenu)vistaPadre.getControlador()).setEndPoint(54,25);
+	}
+
+	private void btnCalcularRutaActionPerformed(ActionEvent e) {
+		((Controller_MainMenu)vistaPadre.getControlador()).calcularRuta();
+	}
+
+	private void menuMostrarCaminoActionPerformed(ActionEvent e) {
+		((Controller_MainMenu)vistaPadre.getControlador()).togglePath(menuMostrarCamino.getState());
+	}
+
+	private void scrollBarImageMouseClicked(MouseEvent e) {
+		//((Controller_MainMenu)vistaPadre.getControlador()).setPoint(e.getX(), e.getY());
 	}
 
 	
@@ -105,12 +130,13 @@ public class GUI_MainMenu extends JFrame {
 		menuMapaOriginal = new JCheckBoxMenuItem();
 		menuMostrarGrafo = new JCheckBoxMenuItem();
 		menuMostrarBordes = new JCheckBoxMenuItem();
+		menuMostrarCamino = new JCheckBoxMenuItem();
 		statusBar = new JPanel();
 		lblCoord = new JLabel();
 		scrollBarImage = new JScrollPane();
 		imagePanel = new GUI_MainPanel();
 		toolBar = new JToolBar();
-		btnStartPoint = new JButton();
+		btnCalcularRuta = new JButton();
 
 		//======== this ========
 		setLayout(new GridLayout());
@@ -198,6 +224,17 @@ public class GUI_MainMenu extends JFrame {
 						}
 					});
 					menu2.add(menuMostrarBordes);
+
+					//---- menuMostrarCamino ----
+					menuMostrarCamino.setText("Mostrar Camino");
+					menuMostrarCamino.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK));
+					menuMostrarCamino.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							menuMostrarCaminoActionPerformed(e);
+						}
+					});
+					menu2.add(menuMostrarCamino);
 				}
 				menuBar1.add(menu2);
 			}
@@ -225,6 +262,12 @@ public class GUI_MainMenu extends JFrame {
 
 			//======== scrollBarImage ========
 			{
+				scrollBarImage.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						scrollBarImageMouseClicked(e);
+					}
+				});
 
 				//---- imagePanel ----
 				imagePanel.addMouseListener(new MouseAdapter() {
@@ -246,9 +289,15 @@ public class GUI_MainMenu extends JFrame {
 			{
 				toolBar.setFloatable(false);
 
-				//---- btnStartPoint ----
-				btnStartPoint.setText("Start");
-				toolBar.add(btnStartPoint);
+				//---- btnCalcularRuta ----
+				btnCalcularRuta.setText("Calcular Ruta");
+				btnCalcularRuta.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						btnCalcularRutaActionPerformed(e);
+					}
+				});
+				toolBar.add(btnCalcularRuta);
 			}
 
 			GroupLayout panel1Layout = new GroupLayout(panel1);
@@ -290,12 +339,13 @@ public class GUI_MainMenu extends JFrame {
 	private JCheckBoxMenuItem menuMapaOriginal;
 	private JCheckBoxMenuItem menuMostrarGrafo;
 	private JCheckBoxMenuItem menuMostrarBordes;
+	private JCheckBoxMenuItem menuMostrarCamino;
 	private JPanel statusBar;
 	private JLabel lblCoord;
 	private JScrollPane scrollBarImage;
 	private GUI_MainPanel imagePanel;
 	private JToolBar toolBar;
-	private JButton btnStartPoint;
+	private JButton btnCalcularRuta;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 	
 	public GUI_MainPanel getImagePanel() {

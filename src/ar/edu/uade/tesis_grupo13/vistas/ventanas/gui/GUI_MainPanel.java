@@ -5,8 +5,10 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -22,7 +24,8 @@ public class GUI_MainPanel extends JLabel implements Scrollable {
 		
 	private HashMap<String, BufferedImage> layers = new HashMap<String, BufferedImage>();
 	private HashMap<String, ImageIcon> layerBuffer = new HashMap<String, ImageIcon>();
-	private String[] layerOrder = {"mapaGrafo", "base", "bordes", "grafo", "grid"};		
+	private String[] layerOrder = {"mapaGrafo", "base", "bordes", "grafo", "path", "startPoint", "endPoint", "grid"};		
+	private String[] noBuffer = {"startPoint", "endPoint"};
 	
 	private String getLayerString() {								
 		
@@ -46,11 +49,12 @@ public class GUI_MainPanel extends JLabel implements Scrollable {
 	private void redibujar() {
 		
 		String layerString = getLayerString();
+		String layerStringNoBF = getLayerStringNoBuffer();
 		setAlignmentX(CENTER_ALIGNMENT);
 		setAlignmentY(TOP_ALIGNMENT);
+				
+		if (layerBuffer.containsKey(layerString) && layerString.equals(layerStringNoBF)) {
 		
-		if (layerBuffer.containsKey(layerString)) {
-			
 			setIcon(layerBuffer.get(layerString));
 			System.err.println("dibujando buffer: " + layerString);
 			
@@ -64,14 +68,36 @@ public class GUI_MainPanel extends JLabel implements Scrollable {
 					gTemp.drawImage(layers.get(layer), 0, 0, null);
 					layerBuffer.put(layerString, new ImageIcon(layers.get(layer)));
 				}					
-			}	
+			}						
 			
-			layerBuffer.put(layerString, new ImageIcon(tempImg));
-			setIcon(layerBuffer.get(layerString));
-			System.err.println("dibujando nuevo: " + layerString);
+			layerBuffer.put(layerStringNoBF, new ImageIcon(tempImg));
+			setIcon(layerBuffer.get(layerStringNoBF));
+			System.err.println("dibujando nuevo: " + layerStringNoBF);
 			
 		}
 		
+	}
+
+	private String getLayerStringNoBuffer() {
+		ArrayList<String> keys = new ArrayList<String>(layers.keySet());
+		List<String> noBF = Arrays.asList(noBuffer);
+		
+		if (keys.size() > 0) { 
+		
+			Collections.sort(keys);
+			StringBuilder result = new StringBuilder(keys.get(0));					
+			
+			for (int i=1; i<keys.size(); i++) {				
+				if (!noBF.contains(keys.get(i))) {
+					System.err.println(keys.get(i));
+					result.append("+").append(keys.get(i));
+				}
+			}
+			
+			return result.toString();
+		} else {
+			return null;
+		}
 	}
 
 	public BufferedImage getLayer(String layerName) {

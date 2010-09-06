@@ -1,8 +1,5 @@
 package ar.edu.uade.tesis_grupo13.modelo.grafo;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -18,6 +15,8 @@ public class Grafo {
 	private SimpleWeightedGraph<Coordenada, DefaultWeightedEdge> grafo;
 	private Coordenada[][] matrizCoord;
 	private MapMaker mapa;
+	private Coordenada startPoint = null;
+	private Coordenada endPoint = null;
 
 	public Grafo(MapMaker mapMaker){
 		this.mapa = mapMaker;
@@ -125,13 +124,33 @@ public class Grafo {
 		
 		List<DefaultWeightedEdge> path = DijkstraShortestPath.findPathBetween(grafo, matrizCoord[y][x], matrizCoord[y2][x2]);
 		
-		if (!path.isEmpty()) {
+		if (path != null && !path.isEmpty()) {
 			for (DefaultWeightedEdge edge : path) {
 				resultado.add(grafo.getEdgeTarget(edge));
 			}
 		}
 		
 		return resultado;		
+	}
+
+	public void setStartPoint(Coordenada coord) {		
+		startPoint = coord;
+	}
+	
+	public void setEndPoint(Coordenada coord) {		
+		endPoint = coord;
+	}
+
+	public ArrayList<Coordenada> calcularCamino() {
+		return calcularCamino(startPoint.getMatrizX(), startPoint.getMatrizY(), endPoint.getMatrizX(), endPoint.getMatrizY());	
+	}
+
+	public Coordenada getStartPoint() {
+		return startPoint;
+	}
+
+	public Coordenada getEndPoint() {
+		return endPoint;
 	}
 
 
