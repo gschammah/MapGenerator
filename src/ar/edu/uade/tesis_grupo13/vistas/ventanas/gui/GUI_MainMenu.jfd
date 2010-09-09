@@ -22,11 +22,11 @@
          <class>org.jdesktop.layout.GroupLayout</class>
          <void method="setProperty">
           <string>$horizontalGroup</string>
-          <string>par l {seq l {space :p:0:p, par l {comp toolBar::t::770:x, comp scrollBarImage::l::770:x, comp menuBar1::l::770:x:2, comp statusBar::l:::x}}}</string>
+          <string>par l {seq l {space :p:0:p, par l {comp toolBar::t::770:x, comp menuBar1::l::770:x:2, comp statusBar::l:::x, seq l {comp scrollBarImage::::643:x, space :p:0:p, comp scrollInfo:::p:127:p}}}}</string>
          </void>
          <void method="setProperty">
           <string>$verticalGroup</string>
-          <string>par l {seq {comp menuBar1:::p::p, space :p:0:p, comp toolBar:::p:24:p, space :p:3:p, comp scrollBarImage::::280:x, space :p:0:p, comp statusBar:::p::p}}</string>
+          <string>par l {seq {comp menuBar1:::p::p, space :p:0:p, comp toolBar:::p:24:p, space :p:0:p, par l {seq {space :p:3:p, comp scrollBarImage::::280:x}, comp scrollInfo::l::283:x}, space :p:0:p, comp statusBar:::p::p}}</string>
          </void>
         </object>
         <void property="name">
@@ -391,6 +391,38 @@
               <string>btnCalcularRutaActionPerformed</string>
               <boolean>true</boolean>
              </object>
+            </void>
+           </object>
+          </void>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.jformdesigner.model.FormContainer">
+          <string>javax.swing.JScrollPane</string>
+          <object class="com.jformdesigner.model.FormLayoutManager">
+           <class>javax.swing.JScrollPane</class>
+          </object>
+          <void property="name">
+           <string>scrollInfo</string>
+          </void>
+          <void method="add">
+           <object class="com.jformdesigner.model.FormComponent">
+            <string>javax.swing.JTextArea</string>
+            <void method="setProperty">
+             <string>editable</string>
+             <boolean>false</boolean>
+            </void>
+            <void method="setProperty">
+             <string>background</string>
+             <object class="java.awt.Color">
+              <int>255</int>
+              <int>255</int>
+              <int>255</int>
+              <int>255</int>
+             </object>
+            </void>
+            <void property="name">
+             <string>txtInfo</string>
             </void>
            </object>
           </void>

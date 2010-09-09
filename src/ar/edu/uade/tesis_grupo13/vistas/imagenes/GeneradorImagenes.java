@@ -62,10 +62,8 @@ public class GeneradorImagenes {
 		return layers.get("grafo");
 	}
 
-	public BufferedImage getPath(ArrayList<Coordenada> camino) {
-		if (layers.get("path") == null) {
-			layers.put("path", Path.generar(width, height, camino));
-		}
+	public BufferedImage getPath(ArrayList<Coordenada> camino) {		
+		layers.put("path", Path.generar(width, height, camino));		
 		return layers.get("path");
 	}
 	

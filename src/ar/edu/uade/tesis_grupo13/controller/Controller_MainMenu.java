@@ -116,12 +116,21 @@ public class Controller_MainMenu extends Controlador {
 	}
 
 	public void calcularRuta() {
-		ArrayList<Coordenada> camino = modelo.getGrafo().calcularCamino();		
-		vista.addLayer("path", generadorImagenes.getPath(camino));
-		
-		for (Coordenada coordenada : camino) {
-			System.out.println(coordenada.getMatrizX() + ", " + coordenada.getMatrizY());
+		try {
+			ArrayList<Coordenada> camino = modelo.getGrafo().calcularCamino();		
+			vista.addLayer("path", generadorImagenes.getPath(camino));
+			
+			for (Coordenada coordenada : camino) {
+				System.out.println(coordenada.getMatrizX() + ", " + coordenada.getMatrizY());
+			}
+		} catch (NullPointerException e) {
+			vista.showErrorPopup("Seleccione primero un punto de inicio y uno de destino");
 		}
+	}
+
+	public void showInfo(int x, int y) {
+		CoordenadaSoftware coord = new CoordenadaSoftware(x, y);
+		vista.setInfoText(coord.toString());
 	}
 				
 }

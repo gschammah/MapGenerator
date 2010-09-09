@@ -4,6 +4,7 @@
 
 package ar.edu.uade.tesis_grupo13.vistas.ventanas.gui;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,8 +24,10 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.border.SoftBevelBorder;
@@ -79,10 +82,14 @@ public class GUI_MainMenu extends JFrame {
 	}
 
 	private void imagePanelMouseClicked(MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON1) {
-			((Controller_MainMenu)vistaPadre.getControlador()).setStartPoint(e.getX(), e.getY());
-		} else {
-			((Controller_MainMenu)vistaPadre.getControlador()).setEndPoint(e.getX(), e.getY());
+		if (!e.isControlDown()) {
+			if (e.getButton() == MouseEvent.BUTTON1) {
+				((Controller_MainMenu)vistaPadre.getControlador()).setStartPoint(e.getX(), e.getY());
+			} else {
+				((Controller_MainMenu)vistaPadre.getControlador()).setEndPoint(e.getX(), e.getY());
+			}
+		} else if (e.getButton() == MouseEvent.BUTTON1) {
+			((Controller_MainMenu)vistaPadre.getControlador()).showInfo(e.getX(), e.getY());
 		}
 	}
 
@@ -99,6 +106,10 @@ public class GUI_MainMenu extends JFrame {
 
 	private void menuMostrarCaminoActionPerformed(ActionEvent e) {
 		((Controller_MainMenu)vistaPadre.getControlador()).togglePath(menuMostrarCamino.getState());
+	}
+
+	private void scrollBarImageMouseClicked(MouseEvent e) {
+		// TODO add your code here
 	}
 	
 	
@@ -121,6 +132,8 @@ public class GUI_MainMenu extends JFrame {
 		imagePanel = new GUI_MainPanel();
 		toolBar = new JToolBar();
 		btnCalcularRuta = new JButton();
+		scrollInfo = new JScrollPane();
+		txtInfo = new JTextArea();
 
 		//======== this ========
 		setLayout(new GridLayout());
@@ -246,7 +259,13 @@ public class GUI_MainMenu extends JFrame {
 
 			//======== scrollBarImage ========
 			{
-				
+				scrollBarImage.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						scrollBarImageMouseClicked(e);
+					}
+				});
+
 				//---- imagePanel ----
 				imagePanel.addMouseListener(new MouseAdapter() {
 					@Override
@@ -278,6 +297,15 @@ public class GUI_MainMenu extends JFrame {
 				toolBar.add(btnCalcularRuta);
 			}
 
+			//======== scrollInfo ========
+			{
+
+				//---- txtInfo ----
+				txtInfo.setEditable(false);
+				txtInfo.setBackground(Color.white);
+				scrollInfo.setViewportView(txtInfo);
+			}
+
 			GroupLayout panel1Layout = new GroupLayout(panel1);
 			panel1.setLayout(panel1Layout);
 			panel1Layout.setHorizontalGroup(
@@ -286,9 +314,12 @@ public class GUI_MainMenu extends JFrame {
 						.addGap(0, 0, 0)
 						.addGroup(panel1Layout.createParallelGroup()
 							.addComponent(toolBar, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 770, Short.MAX_VALUE)
-							.addComponent(scrollBarImage, GroupLayout.DEFAULT_SIZE, 770, Short.MAX_VALUE)
 							.addComponent(menuBar1, GroupLayout.DEFAULT_SIZE, 770, Short.MAX_VALUE)
-							.addComponent(statusBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+							.addComponent(statusBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGroup(panel1Layout.createSequentialGroup()
+								.addComponent(scrollBarImage, GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
+								.addGap(0, 0, 0)
+								.addComponent(scrollInfo, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))))
 			);
 			panel1Layout.setVerticalGroup(
 				panel1Layout.createParallelGroup()
@@ -296,8 +327,12 @@ public class GUI_MainMenu extends JFrame {
 						.addComponent(menuBar1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGap(0, 0, 0)
 						.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-						.addGap(3, 3, 3)
-						.addComponent(scrollBarImage, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+						.addGap(0, 0, 0)
+						.addGroup(panel1Layout.createParallelGroup()
+							.addGroup(panel1Layout.createSequentialGroup()
+								.addGap(3, 3, 3)
+								.addComponent(scrollBarImage, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE))
+							.addComponent(scrollInfo, GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE))
 						.addGap(0, 0, 0)
 						.addComponent(statusBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 			);
@@ -324,6 +359,8 @@ public class GUI_MainMenu extends JFrame {
 	private GUI_MainPanel imagePanel;
 	private JToolBar toolBar;
 	private JButton btnCalcularRuta;
+	private JScrollPane scrollInfo;
+	private JTextArea txtInfo;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 	
 	public GUI_MainPanel getImagePanel() {
@@ -331,7 +368,10 @@ public class GUI_MainMenu extends JFrame {
 	}
 				
 	public void addLayer(String layerName, BufferedImage image) {
-		imagePanel.addLayer(layerName, image);				
+		imagePanel.addLayer(layerName, image);
+		if (layerName.equals("path")) {
+			menuMostrarCamino.setState(true);
+		}
 	}
 
 	public void removeLayer(String layerName) {
@@ -345,6 +385,11 @@ public class GUI_MainMenu extends JFrame {
 
 	public void clearLayers() {		
 		imagePanel.clearLayers();
+	}
+
+
+	public void setInfoText(String txt) {		
+		txtInfo.setText(txt);
 	}
 		
 	
