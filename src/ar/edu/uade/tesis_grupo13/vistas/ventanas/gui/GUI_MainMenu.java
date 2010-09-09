@@ -4,7 +4,6 @@
 
 package ar.edu.uade.tesis_grupo13.vistas.ventanas.gui;
 
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,7 +30,7 @@ import javax.swing.KeyStroke;
 import javax.swing.border.SoftBevelBorder;
 
 import ar.edu.uade.tesis_grupo13.controller.Controller_MainMenu;
-import ar.edu.uade.tesis_grupo13.modelo.grafo.CoordenadaSoftware;
+import ar.edu.uade.tesis_grupo13.grafos.CoordenadaSoftware;
 import ar.edu.uade.tesis_grupo13.vistas.ventanas.VistaMainMenu;
 
 /**
@@ -94,14 +93,6 @@ public class GUI_MainMenu extends JFrame {
 		} catch (NullPointerException exc) {}
 	}
 
-	private void btnStartPointActionPerformed(ActionEvent e) {
-		((Controller_MainMenu)vistaPadre.getControlador()).setStartPoint(4,16);
-	}
-
-	private void btnEndPointActionPerformed(ActionEvent e) {
-		((Controller_MainMenu)vistaPadre.getControlador()).setEndPoint(54,25);
-	}
-
 	private void btnCalcularRutaActionPerformed(ActionEvent e) {
 		((Controller_MainMenu)vistaPadre.getControlador()).calcularRuta();
 	}
@@ -109,14 +100,7 @@ public class GUI_MainMenu extends JFrame {
 	private void menuMostrarCaminoActionPerformed(ActionEvent e) {
 		((Controller_MainMenu)vistaPadre.getControlador()).togglePath(menuMostrarCamino.getState());
 	}
-
-	private void scrollBarImageMouseClicked(MouseEvent e) {
-		//((Controller_MainMenu)vistaPadre.getControlador()).setPoint(e.getX(), e.getY());
-	}
-
 	
-
-
 	
 	private void initComponents() {		
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -262,13 +246,7 @@ public class GUI_MainMenu extends JFrame {
 
 			//======== scrollBarImage ========
 			{
-				scrollBarImage.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						scrollBarImageMouseClicked(e);
-					}
-				});
-
+				
 				//---- imagePanel ----
 				imagePanel.addMouseListener(new MouseAdapter() {
 					@Override

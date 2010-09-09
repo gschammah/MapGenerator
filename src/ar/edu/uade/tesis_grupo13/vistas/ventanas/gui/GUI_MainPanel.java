@@ -24,7 +24,7 @@ public class GUI_MainPanel extends JLabel implements Scrollable {
 		
 	private HashMap<String, BufferedImage> layers = new HashMap<String, BufferedImage>();
 	private HashMap<String, ImageIcon> layerBuffer = new HashMap<String, ImageIcon>();
-	private String[] layerOrder = {"mapaGrafo", "base", "bordes", "grafo", "path", "startPoint", "endPoint", "grid"};		
+	private String[] layerOrder = {"mapaGrillado", "base", "bordes", "grafo", "path", "startPoint", "endPoint", "grid"};		
 	private String[] noBuffer = {"startPoint", "endPoint"};
 	
 	private String getLayerString() {								
@@ -106,7 +106,7 @@ public class GUI_MainPanel extends JLabel implements Scrollable {
 
 	
 	public void addLayer(String layerName, BufferedImage image) {
-		if (layerName.equals("mapaGrafo")) {
+		if (layerName.equals("mapaGrillado")) {
 			imageSize = new Dimension(image.getWidth(), image.getHeight());			
 		}
 		layers.put(layerName, image);
