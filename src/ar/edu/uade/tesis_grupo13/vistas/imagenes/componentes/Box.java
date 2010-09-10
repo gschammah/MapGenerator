@@ -30,8 +30,7 @@ public class Box extends ImagenRenderizable {
 		BufferedImage imagen = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = imagen.createGraphics();
 		
-		g.setColor(color);
-		
+		g.setColor(color);		
 		g.fillRect((coord.getMatrizX() * Config.gridSize), (coord.getMatrizY() * Config.gridSize), Config.gridSize, Config.gridSize);
 		
 		buffer = imagen;	
