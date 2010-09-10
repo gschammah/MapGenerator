@@ -106,14 +106,16 @@ public class Controller_MainMenu extends Controlador {
 	public void setStartPoint(int x, int y) {
 		CoordenadaSoftware coord = new CoordenadaSoftware(x, y);
 		modelo.getGrafo().setStartPoint(coord);
+		vista.removeLayer("path");
 		vista.addLayer("startPoint", Box.getInstance(modelo.getImagen().getWidth(),
 												 modelo.getImagen().getHeight(),
 												 coord, Color.GREEN));		
 	}
 
-	public void setEndPoint(int x, int y) {
+	public void setEndPoint(int x, int y) {		
 		CoordenadaSoftware coord = new CoordenadaSoftware(x, y);
 		modelo.getGrafo().setEndPoint(coord);
+		vista.removeLayer("path");
 		vista.addLayer("endPoint", Box.getInstance(modelo.getImagen().getWidth(),
 											   modelo.getImagen().getHeight(),
 											   coord, Color.RED));
@@ -137,6 +139,7 @@ public class Controller_MainMenu extends Controlador {
 	public void setGridSize(int size) {		
 		Config.setGridSize(size);		
 		modelo.regenerarMatrizParedes();
+		generadorImagenes.setMap(modelo.getGrafo().getMapa());
 		((MapaGrillado)generadorImagenes.getMapaGrillado()).setMap(modelo.getGrafo().getMapa());
 		((Bordes)generadorImagenes.getBordes()).setMap(modelo.getGrafo().getMapa());
 		((Grafo)generadorImagenes.getGrafo()).setMap(modelo.getGrafo().getMapa());

@@ -34,17 +34,14 @@ public class Path extends ImagenRenderizable{
 		g.setStroke(new BasicStroke(2));
 		
 		for (int i = 0; i < camino.size()-1; i++) {
-			g.drawLine((camino.get(i).getMatrizX() * Config.gridSize) + (Config.gridSize - 2)/2, (camino.get(i).getMatrizY() * Config.gridSize) + (Config.gridSize - 2)/2, 
-					   (camino.get(i+1).getMatrizX() * Config.gridSize) + (Config.gridSize - 2)/2, (camino.get(i+1).getMatrizY() * Config.gridSize) + (Config.gridSize - 2)/2);
+			g.drawLine((camino.get(i).getMatrizX() * Config.gridSize) + (Config.gridSize)/2, (camino.get(i).getMatrizY() * Config.gridSize) + (Config.gridSize)/2, 
+					   (camino.get(i+1).getMatrizX() * Config.gridSize) + (Config.gridSize)/2, (camino.get(i+1).getMatrizY() * Config.gridSize) + (Config.gridSize)/2);
+			
+			System.out.println(camino.get(i).getMatrizX() + ", " + camino.get(i).getMatrizY());
 		}
 		
 		buffer = imagen;		
 	}
-		
-	@Override
-	public void regenerar() {
-		
-		super.regenerar();
-	}
+			
 	
 }

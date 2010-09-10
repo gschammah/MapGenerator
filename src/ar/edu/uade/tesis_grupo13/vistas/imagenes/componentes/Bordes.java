@@ -13,9 +13,8 @@ public class Bordes extends ImagenRenderizable {
 	private static Bordes instance;
 
 	public Bordes(int w, int h, Mapa mapa) {
-		super(w, h);		
-		map = mapa;
-		generar();
+		super(w, h);
+		setMap(mapa);		
 	}
 
 	public static Bordes getInstance(int w, int h, Mapa map) {
@@ -39,13 +38,14 @@ public class Bordes extends ImagenRenderizable {
 					g.fillRect((x * Config.gridSize), (y * Config.gridSize), Config.gridSize, Config.gridSize);
 				} 				
 			}
-		}
+		}				
 		
 		buffer = imagen;	
 	}
 
 	public void setMap(Mapa mapa) {
 		this.map = mapa;
+		generar();
 	}		
 
 }

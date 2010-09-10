@@ -50,6 +50,10 @@ public class GeneradorImagenes {
 		return layers.get("bordes");
 	}
 	
+	public void setMap(Mapa map) {
+		this.map = map;
+	}
+
 	public MapaComponent getMapaGrillado() {
 		if (layers.get("mapaGrillado") == null) {
 			layers.put("mapaGrillado", MapaGrillado.getInstance(width, height, map));

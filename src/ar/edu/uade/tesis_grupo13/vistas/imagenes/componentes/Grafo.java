@@ -38,14 +38,16 @@ public class Grafo extends ImagenRenderizable {
 					
 					//Grafico vertice
 					g.setColor(Color.BLUE);
-					g.fillRect((x*Config.gridSize) + Config.gridSize / 2, (y*Config.gridSize) + Config.gridSize / 2, 2, 2);								
+					g.fillRect((x*Config.gridSize) + (Config.gridSize - 4)/ 2, (y*Config.gridSize) + (Config.gridSize - 4)/2, 4, 4);								
 					
 					for (Coordenada coord : map.getGrafo().getVertices(x, y)) {						
 						int x2 = coord.getMatrizX();
 						int y2 = coord.getMatrizY();
 						double weight = map.getGrafo().getEdgeWeight(x, y, x2, y2);
 						
-						if (weight > 1 && weight < 5) {
+						if (weight <= 1) {
+							g.setColor(Color.CYAN);
+						} else if (weight > 1 && weight < 5) {
 							g.setColor(Color.GREEN);
 						} else if (weight >= 5 && weight < 7.5) {
 							g.setColor(Color.YELLOW);

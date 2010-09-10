@@ -111,11 +111,6 @@ public class GUI_MainPanel extends JLabel implements Scrollable {
 			return null;
 		}
 	}
-
-	public BufferedImage getLayer(String layerName) {
-		return layers.get(layerName).getFromBuffer();
-	}
-
 	
 	public void addLayer(String layerName, MapaComponent image) {
 		if (layerName.equals("mapaGrillado")) {
