@@ -7,18 +7,17 @@ public class Imagen extends ImagenRenderizable {
 	private BufferedImage imagen;
 	private static Imagen instance;	
 
-	public Imagen(int w, int h, BufferedImage img) {
-		super(w, h);
+	public Imagen(BufferedImage img) {		
 		imagen = img;
 		buffer = imagen;
 	}
 	
-	public void generar() {		
+	public void render() {		
 	}
 
 	public static Imagen getInstance(BufferedImage imagen) {
 		if (instance == null) {
-			instance = new Imagen(imagen.getWidth(), imagen.getHeight(), imagen);
+			instance = new Imagen(imagen);
 		}
 		return instance;
 	}

@@ -4,8 +4,8 @@ import java.awt.image.BufferedImage;
 
 public interface MapaComponent {	
 			
-	public void generar();
-	public void regenerar();
+	public void render();
+	public void repaint();
 	public BufferedImage getFromBuffer();
 	public int getWidth();
 	public int getHeight();

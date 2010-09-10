@@ -4,32 +4,24 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import ar.edu.uade.tesis_grupo13.config.Config;
-import ar.edu.uade.tesis_grupo13.grafos.Mapa;
-
 public class MapaGrillado extends ImagenRenderizable {		
-
-	private Mapa map;
+	
 	private static MapaGrillado instance;	
 	
-	public MapaGrillado(int w, int h, Mapa mapa) {
-		super(w, h);
-		map = mapa;		
-		generar();
+	public MapaGrillado() {
+		super();
+		render();
 	}
+		
 	
-	public void setMap(Mapa map) {
-		this.map = map;		
-	}
-	
-	public static MapaGrillado getInstance(int w, int h, Mapa map) {
+	public static MapaGrillado getInstance() {
 		if (instance ==  null) {
-			instance = new MapaGrillado(w, h, map);
+			instance = new MapaGrillado();
 		}
 		return instance;
 	}
 
-	public void generar() {
+	public void render() {
 				
 		BufferedImage imagen = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = imagen.createGraphics();
@@ -42,7 +34,7 @@ public class MapaGrillado extends ImagenRenderizable {
 				} else {
 					g.setColor(Color.WHITE);
 				}
-				g.fillRect((x * Config.gridSize), (y * Config.gridSize), Config.gridSize, Config.gridSize);
+				g.fillRect((x * config.gridSize), (y * config.gridSize), config.gridSize, config.gridSize);
 			}
 		}
 		

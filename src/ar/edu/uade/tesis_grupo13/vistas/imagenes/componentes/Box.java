@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import ar.edu.uade.tesis_grupo13.config.Config;
 import ar.edu.uade.tesis_grupo13.modelo.CoordenadaSoftware;
 
 public class Box extends ImagenRenderizable {
@@ -13,27 +12,38 @@ public class Box extends ImagenRenderizable {
 	private Color color;
 	private static Box instance;	
 
-	public Box(int w, int h, CoordenadaSoftware coord, Color color) {
-		super(w, h);
+	public Box(CoordenadaSoftware coord, Color color) {
+		super();
 		this.coord = coord;		
-		this.color = color;
-		generar();
+		this.color = color;		
+		render();
 	}
 	
-	public static Box getInstance(int w, int h, CoordenadaSoftware coord, Color color) {	
-		instance = new Box(w, h, coord, color);		
+	public static Box getInstance(CoordenadaSoftware coord, Color color) {	
+		instance = new Box(coord, color);		
 		return instance;
 	}
 
-	public void generar() {
+	public void render() {
 				
 		BufferedImage imagen = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = imagen.createGraphics();
 		
-		g.setColor(color);		
-		g.fillRect((coord.getMatrizX() * Config.gridSize), (coord.getMatrizY() * Config.gridSize), Config.gridSize, Config.gridSize);
+		g.setColor(color);
+		int x = (int) (coord.getMatrizX() * config.gridSize);
+		int y = (int) (coord.getMatrizY() * config.gridSize);
+		int w = (int) (config.gridSize);
+		int h = (int) (config.gridSize);
+		g.fillRect(x, y, w, h);
 		
 		buffer = imagen;	
+	}
+	
+	@Override
+	public void repaint() {
+		if (ImagenRenderizable.changeType.equals("gridSize")) {			
+			super.repaint();
+		}
 	}
 		
 }

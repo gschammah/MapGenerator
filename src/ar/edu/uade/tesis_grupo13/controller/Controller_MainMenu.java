@@ -5,21 +5,17 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
 import ar.edu.uade.tesis_grupo13.MVCframework.controlador.Controlador;
 import ar.edu.uade.tesis_grupo13.config.Config;
-import ar.edu.uade.tesis_grupo13.grafos.Coordenada;
+import ar.edu.uade.tesis_grupo13.grafos.VertexList;
 import ar.edu.uade.tesis_grupo13.modelo.CoordenadaSoftware;
 import ar.edu.uade.tesis_grupo13.modelo.MapMaker;
 import ar.edu.uade.tesis_grupo13.tools.ProcesamientoImagenes;
 import ar.edu.uade.tesis_grupo13.vistas.imagenes.GeneradorImagenes;
-import ar.edu.uade.tesis_grupo13.vistas.imagenes.componentes.Bordes;
 import ar.edu.uade.tesis_grupo13.vistas.imagenes.componentes.Box;
-import ar.edu.uade.tesis_grupo13.vistas.imagenes.componentes.Grafo;
-import ar.edu.uade.tesis_grupo13.vistas.imagenes.componentes.MapaGrillado;
 import ar.edu.uade.tesis_grupo13.vistas.ventanas.VistaMainMenu;
 
 public class Controller_MainMenu extends Controlador {
@@ -28,12 +24,14 @@ public class Controller_MainMenu extends Controlador {
 	private MapMaker modelo;	
 	private CoordenadaSoftware currentCoord;
 	private GeneradorImagenes generadorImagenes;
+	private Config config;
 
 	public Controller_MainMenu(MapMaker mapa, VistaMainMenu vista) {
 		super(mapa, vista);
 		this.vista = vista;
 		this.modelo = mapa;
-		this.currentCoord = new CoordenadaSoftware(0, 0);		
+		this.currentCoord = new CoordenadaSoftware(0, 0);
+		config = MapMaker.getInstance().getConfig();
 	}
 
 	public void salir() {
@@ -89,7 +87,7 @@ public class Controller_MainMenu extends Controlador {
 	}
 	
 	public void togglePath(boolean mostrar) {	
-		if (mostrar && generadorImagenes.getPath() != null) {
+		if (mostrar && modelo.getCamino() != null) {
 			vista.addLayer("path", generadorImagenes.getPath());
 		} else {
 			vista.removeLayer("path");		
@@ -107,24 +105,25 @@ public class Controller_MainMenu extends Controlador {
 		CoordenadaSoftware coord = new CoordenadaSoftware(x, y);
 		modelo.getGrafo().setStartPoint(coord);
 		vista.removeLayer("path");
-		vista.addLayer("startPoint", Box.getInstance(modelo.getImagen().getWidth(),
-												 modelo.getImagen().getHeight(),
-												 coord, Color.GREEN));		
+		vista.addLayer("startPoint", Box.getInstance(coord, Color.GREEN));		
 	}
 
 	public void setEndPoint(int x, int y) {		
 		CoordenadaSoftware coord = new CoordenadaSoftware(x, y);
 		modelo.getGrafo().setEndPoint(coord);
 		vista.removeLayer("path");
-		vista.addLayer("endPoint", Box.getInstance(modelo.getImagen().getWidth(),
-											   modelo.getImagen().getHeight(),
-											   coord, Color.RED));
+		vista.addLayer("endPoint", Box.getInstance(coord, Color.RED));
 	}
 
 	public void calcularRuta() {
 		try {
-			ArrayList<Coordenada> camino = modelo.getGrafo().calcularCamino();		
-			vista.addLayer("path", generadorImagenes.getPath(camino));
+			modelo.setCamino(modelo.getGrafo().calcularCamino());
+			if (modelo.getCamino().isEmpty()) {
+				vista.removeLayer("path");
+				vista.showErrorPopup("No se encontró ninguna ruta posible.");				
+			} else {
+				vista.addLayer("path", generadorImagenes.getPath());
+			}
 						
 		} catch (NullPointerException e) {
 			vista.showErrorPopup("Seleccione primero un punto de inicio y uno de destino");
@@ -132,22 +131,21 @@ public class Controller_MainMenu extends Controlador {
 	}
 
 	public void showInfo(int x, int y) {
-		CoordenadaSoftware coord = new CoordenadaSoftware(x, y);
-		vista.setInfoText(coord.toString());
+		CoordenadaSoftware coord = new CoordenadaSoftware(x, y);		
+		vista.setInfoText(modelo.getGrafo().getVertices(coord).toString());
 	}
 
-	public void setGridSize(int size) {		
-		Config.setGridSize(size);		
-		modelo.regenerarMatrizParedes();
-		generadorImagenes.setMap(modelo.getGrafo().getMapa());
-		((MapaGrillado)generadorImagenes.getMapaGrillado()).setMap(modelo.getGrafo().getMapa());
-		((Bordes)generadorImagenes.getBordes()).setMap(modelo.getGrafo().getMapa());
-		((Grafo)generadorImagenes.getGrafo()).setMap(modelo.getGrafo().getMapa());
-		if (vista.hasLayer("path")) {
-			calcularRuta();
-		}
-		generadorImagenes.clearBuffer();		
-		vista.clearBuffer();
+	public void setGridSize(int size) {
+		generadorImagenes.clearBuffer();
+		config.setGridSize(size);						
+	}
+
+	public void setZoomWheel(int unitsToScroll) {
+		config.autoZoom(unitsToScroll);				
+	}
+
+	public void setZoom(int value) {		
+		config.setZoom(value / 100d);
 	}
 				
 }

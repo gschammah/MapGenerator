@@ -1,7 +1,6 @@
 package ar.edu.uade.tesis_grupo13.vistas.ventanas.gui;
 
 import java.awt.Dimension;
-
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -16,11 +15,15 @@ import javax.swing.JLabel;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
-import ar.edu.uade.tesis_grupo13.vistas.imagenes.componentes.*;
+import ar.edu.uade.tesis_grupo13.config.Config;
+import ar.edu.uade.tesis_grupo13.modelo.MapMaker;
+import ar.edu.uade.tesis_grupo13.vistas.imagenes.componentes.MapaComponent;
+import ar.edu.uade.tesis_grupo13.vistas.ventanas.VistaMainMenu;
 
 public class GUI_MainPanel extends JLabel implements Scrollable {
 		
 	private static final long serialVersionUID = 1L;
+	private VistaMainMenu vistaPadre;
 	
 	private int maxUnitIncrement = 1;
 	private Dimension imageSize;
@@ -73,12 +76,17 @@ public class GUI_MainPanel extends JLabel implements Scrollable {
 			
 		} else if (layers.size() > 0) {
 			
-			BufferedImage tempImg = new BufferedImage(imageSize.width, imageSize.height, BufferedImage.TYPE_INT_ARGB);
+			Config config = ((MapMaker)(vistaPadre.getControlador().getModelo())).getConfig();
+			
+			int width = (int) (imageSize.width * config.zoom);
+			int height = (int) (imageSize.height * config.zoom);
+			
+			BufferedImage tempImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D gTemp = tempImg.createGraphics();			
 			
 			for (String layer: layerOrder) {													
 				if (layers.containsKey(layer)) {		
-					gTemp.drawImage(layers.get(layer).getFromBuffer(), 0, 0, null);					
+					gTemp.drawImage(layers.get(layer).getFromBuffer(), 0, 0, width, height, null);					
 					layerBuffer.put(layerString, new ImageIcon(layers.get(layer).getFromBuffer()));					
 				}					
 			}						
@@ -176,13 +184,17 @@ public class GUI_MainPanel extends JLabel implements Scrollable {
 	public void clearLayers() {		
 		layerBuffer.clear();		
 		for (String key: layers.keySet()) {
-			layers.get(key).regenerar();
+			layers.get(key).repaint();
 		}		
 		redibujar();		
 	}
 
 	public boolean hasLayer(String layerName) {
 		return layers.containsKey(layerName);
+	}
+	
+	public void setVistaPadre(VistaMainMenu vistaPadre) {
+		this.vistaPadre = vistaPadre;
 	}
 
 		

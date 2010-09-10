@@ -22,11 +22,11 @@
          <class>org.jdesktop.layout.GroupLayout</class>
          <void method="setProperty">
           <string>$horizontalGroup</string>
-          <string>par l {seq l {space :p:0:p, par l {comp toolBar::t::770:x, comp menuBar1::l::770:x:2, comp statusBar::l:::x, seq t {comp scrollBarImage::::637:x, space :::p, comp scrollInfo:::p:127:p}}}}</string>
+          <string>par l {seq l {space :p:0:p, par l {comp toolBar::t::770:x, comp menuBar1::l::770:x:2, comp statusBar::l:::x, seq t {comp scrollBarImage::::492:x, space :::p, comp scrollInfo:::p:272:p}}}}</string>
          </void>
          <void method="setProperty">
           <string>$verticalGroup</string>
-          <string>par l {seq {comp menuBar1:::p::p, space :p:0:p, comp toolBar:::p:28:p, space :p:0:p, par t {seq {space :p:0:p, comp scrollInfo::::279:x}, comp scrollBarImage::::279:x}, space :p:0:p, comp statusBar:::p::p}}</string>
+          <string>par l {seq {comp menuBar1:::p::p, space :p:0:p, comp toolBar:::p:28:p, space :p:0:p, par l {comp scrollInfo::::279:x, comp scrollBarImage::l::279:x}, space :p:0:p, comp statusBar:::p::p}}</string>
          </void>
         </object>
         <void property="name">
@@ -349,6 +349,14 @@
               <boolean>true</boolean>
              </object>
             </void>
+            <void method="addEvent">
+             <object class="com.jformdesigner.model.FormEvent">
+              <string>java.awt.event.MouseWheelListener</string>
+              <string>mouseWheelMoved</string>
+              <string>imagePanelMouseWheelMoved</string>
+              <boolean>true</boolean>
+             </object>
+            </void>
            </object>
           </void>
          </object>
@@ -373,11 +381,11 @@
              <class>org.jdesktop.layout.GroupLayout</class>
              <void method="setProperty">
               <string>$horizontalGroup</string>
-              <string>par l {seq l {space :p:146:p, comp lblGridSize:::p::p, space :::p, comp spnGridSize:::p:52:p, space ::467:x}};par l {seq l {comp btnCalcularRuta:::p:131:p, space ::635:x}}</string>
+              <string>par l {seq l {space :p:146:p, comp lblGridSize:::p::p, space :::p, comp spnGridSize:::p:52:p, space u:::p, comp lblZoom:::p::p, space :::p, comp sliZoom:::p::p, space :::p, comp lblZoomValue:::p::p, space ::165:x}};par l {seq l {comp btnCalcularRuta:::p:131:p, space ::635:x}}</string>
              </void>
              <void method="setProperty">
               <string>$verticalGroup</string>
-              <string>par l {seq l {par b {comp lblGridSize::b::20:x, comp spnGridSize::b::24:x}, space :p:3:p}};par l {seq l {comp btnCalcularRuta:::p::p:2, space :p:3:p}}</string>
+              <string>par l {seq t {par t {comp lblZoomValue::l::24:x, comp sliZoom::l::24:x, par b:t {comp lblGridSize::b::20:x, comp spnGridSize::b::24:x, comp lblZoom::b:p::p}}, space :p:3:p}};par l {seq l {comp btnCalcularRuta:::p::p:2, space :p:3:p}}</string>
              </void>
             </object>
             <void property="name">
@@ -440,6 +448,70 @@
               </void>
              </object>
             </void>
+            <void method="add">
+             <object class="com.jformdesigner.model.FormComponent">
+              <string>javax.swing.JSlider</string>
+              <void method="setProperty">
+               <string>minimum</string>
+               <int>80</int>
+              </void>
+              <void method="setProperty">
+               <string>maximum</string>
+               <int>150</int>
+              </void>
+              <void method="setProperty">
+               <string>snapToTicks</string>
+               <boolean>true</boolean>
+              </void>
+              <void method="setProperty">
+               <string>majorTickSpacing</string>
+               <int>10</int>
+              </void>
+              <void method="setProperty">
+               <string>value</string>
+               <int>100</int>
+              </void>
+              <void method="setProperty">
+               <string>minorTickSpacing</string>
+               <int>10</int>
+              </void>
+              <void property="name">
+               <string>sliZoom</string>
+              </void>
+              <void method="addEvent">
+               <object class="com.jformdesigner.model.FormEvent">
+                <string>javax.swing.event.ChangeListener</string>
+                <string>stateChanged</string>
+                <string>sliZoomStateChanged</string>
+                <boolean>true</boolean>
+               </object>
+              </void>
+             </object>
+            </void>
+            <void method="add">
+             <object class="com.jformdesigner.model.FormComponent">
+              <string>javax.swing.JLabel</string>
+              <void method="setProperty">
+               <string>text</string>
+               <string>Zoom</string>
+              </void>
+              <void property="name">
+               <string>lblZoom</string>
+              </void>
+             </object>
+            </void>
+            <void method="add">
+             <object class="com.jformdesigner.model.FormComponent">
+              <string>javax.swing.JLabel</string>
+              <void method="setProperty">
+               <string>text</string>
+               <string>100%</string>
+              </void>
+              <void property="name">
+               <string>lblZoomValue</string>
+              </void>
+             </object>
+            </void>
            </object>
           </void>
          </object>
@@ -468,6 +540,10 @@
               <int>255</int>
               <int>255</int>
              </object>
+            </void>
+            <void method="setProperty">
+             <string>wrapStyleWord</string>
+             <boolean>true</boolean>
             </void>
             <void property="name">
              <string>txtInfo</string>

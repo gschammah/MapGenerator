@@ -3,16 +3,39 @@ package ar.edu.uade.tesis_grupo13.modelo;
 import java.awt.Color;
 
 import ar.edu.uade.tesis_grupo13.MVCframework.modelo.Modelo;
+import ar.edu.uade.tesis_grupo13.MVCframework.vista.Vista;
 import ar.edu.uade.tesis_grupo13.config.Config;
 import ar.edu.uade.tesis_grupo13.grafos.Grafo;
+import ar.edu.uade.tesis_grupo13.grafos.VertexList;
+import ar.edu.uade.tesis_grupo13.vistas.ventanas.VistaMainMenu;
 
 public class MapMaker extends Modelo{
 	
 	private Imagen imagen;
 	private boolean[][] matrizParedes;
 	private Grafo grafo;
+	private Config config;
+	private VertexList camino;
+	private static MapMaker instance;
 	
 	public MapMaker() {}
+	
+	public VistaMainMenu getVista() {
+		return (VistaMainMenu) vista;
+	}
+	
+	@Override
+	public void setVista(Vista v) {		
+		super.setVista(v);
+		config = new Config(this);
+	}
+	
+	public static MapMaker getInstance() {
+		if (instance == null) {
+			instance = new MapMaker();
+		}
+		return instance;
+	}
 
 	public Grafo getGrafo() {
 		return grafo;
@@ -23,15 +46,15 @@ public class MapMaker extends Modelo{
 		int w = imagen.getWidth();
 		int h = imagen.getHeight();
 		
-		matrizParedes = new boolean[(int)Math.ceil(h/Config.gridSize)+1][(int)Math.ceil(w/Config.gridSize)+1];		 				
+		matrizParedes = new boolean[(int)Math.ceil(h/config.gridSize)+1][(int)Math.ceil(w/config.gridSize)+1];		 				
 
 		for (int i = 0; i < h; i++) {
 			for (int j = 0; j < w; j++) {
 				
 				int pixel = imagen.getRgbMatrix()[j][i];
 								
-				if (!matrizParedes[(int)Math.floor(i/Config.gridSize)][(int)Math.floor(j/Config.gridSize)] && pixel == Color.BLACK.getRGB()) {
-					matrizParedes[(int)Math.floor(i/Config.gridSize)][(int)Math.floor(j/Config.gridSize)] = true;
+				if (!matrizParedes[(int)Math.floor(i/config.gridSize)][(int)Math.floor(j/config.gridSize)] && pixel == Color.BLACK.getRGB()) {
+					matrizParedes[(int)Math.floor(i/config.gridSize)][(int)Math.floor(j/config.gridSize)] = true;
 				}
 				
 			}
@@ -59,7 +82,19 @@ public class MapMaker extends Modelo{
 	public void setImagen(Imagen imagen) {
 		this.imagen = imagen;
 		regenerarMatrizParedes();
+	}
+
+	public Config getConfig() {
+		return config;
+	}
+
+	public void setCamino(VertexList camino) {
+		this.camino = camino;
 	}	
+	
+	public VertexList getCamino() {
+		return this.camino;
+	}
 	
 
 	

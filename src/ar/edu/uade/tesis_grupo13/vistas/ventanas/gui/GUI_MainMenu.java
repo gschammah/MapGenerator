@@ -12,6 +12,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.File;
 
 import javax.swing.GroupLayout;
@@ -25,6 +27,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
@@ -114,7 +117,16 @@ public class GUI_MainMenu extends JFrame {
 	
 	private void spnGridSizeStateChanged(ChangeEvent e) {
 		((Controller_MainMenu)vistaPadre.getControlador()).setGridSize((Integer) spnGridSize.getValue());
+	}	
+
+	private void imagePanelMouseWheelMoved(MouseWheelEvent e) {
+		((Controller_MainMenu)vistaPadre.getControlador()).setZoomWheel(e.getUnitsToScroll());
 	}
+
+	private void sliZoomStateChanged(ChangeEvent e) {
+		((Controller_MainMenu)vistaPadre.getControlador()).setZoom(sliZoom.getValue());
+	}
+
 	
 	
 	private void initComponents() {		
@@ -139,6 +151,9 @@ public class GUI_MainMenu extends JFrame {
 		btnCalcularRuta = new JButton();
 		lblGridSize = new JLabel();
 		spnGridSize = new JSpinner();
+		sliZoom = new JSlider();
+		lblZoom = new JLabel();
+		lblZoomValue = new JLabel();
 		scrollInfo = new JScrollPane();
 		txtInfo = new JTextArea();
 
@@ -280,6 +295,12 @@ public class GUI_MainMenu extends JFrame {
 						imagePanelMouseMoved(e);
 					}
 				});
+				imagePanel.addMouseWheelListener(new MouseWheelListener() {
+					@Override
+					public void mouseWheelMoved(MouseWheelEvent e) {
+						imagePanelMouseWheelMoved(e);
+					}
+				});
 				scrollBarImage.setViewportView(imagePanel);
 			}
 
@@ -311,6 +332,26 @@ public class GUI_MainMenu extends JFrame {
 						}
 					});
 
+					//---- sliZoom ----
+					sliZoom.setMinimum(80);
+					sliZoom.setMaximum(150);
+					sliZoom.setSnapToTicks(true);
+					sliZoom.setMajorTickSpacing(10);
+					sliZoom.setValue(100);
+					sliZoom.setMinorTickSpacing(10);
+					sliZoom.addChangeListener(new ChangeListener() {
+						@Override
+						public void stateChanged(ChangeEvent e) {
+							sliZoomStateChanged(e);
+						}
+					});
+
+					//---- lblZoom ----
+					lblZoom.setText("Zoom");
+
+					//---- lblZoomValue ----
+					lblZoomValue.setText("100%");
+
 					GroupLayout panel1Layout = new GroupLayout(panel1);
 					panel1.setLayout(panel1Layout);
 					panel1Layout.setHorizontalGroup(
@@ -324,7 +365,13 @@ public class GUI_MainMenu extends JFrame {
 								.addComponent(lblGridSize)
 								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 								.addComponent(spnGridSize, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-								.addContainerGap(467, Short.MAX_VALUE))
+								.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+								.addComponent(lblZoom)
+								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(sliZoom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(lblZoomValue)
+								.addContainerGap(165, Short.MAX_VALUE))
 					);
 					panel1Layout.setVerticalGroup(
 						panel1Layout.createParallelGroup()
@@ -332,10 +379,14 @@ public class GUI_MainMenu extends JFrame {
 								.addGroup(panel1Layout.createSequentialGroup()
 									.addComponent(btnCalcularRuta)
 									.addGap(3, 3, 3)))
-							.addGroup(panel1Layout.createSequentialGroup()
-								.addGroup(panel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-									.addComponent(lblGridSize, GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
-									.addComponent(spnGridSize, GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE))
+							.addGroup(GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+								.addGroup(panel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+									.addComponent(lblZoomValue, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+									.addComponent(sliZoom, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+									.addGroup(panel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+										.addComponent(lblGridSize, GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+										.addComponent(spnGridSize, GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+										.addComponent(lblZoom)))
 								.addGap(3, 3, 3))
 					);
 				}
@@ -348,6 +399,7 @@ public class GUI_MainMenu extends JFrame {
 				//---- txtInfo ----
 				txtInfo.setEditable(false);
 				txtInfo.setBackground(Color.white);
+				txtInfo.setWrapStyleWord(true);
 				scrollInfo.setViewportView(txtInfo);
 			}
 
@@ -362,9 +414,9 @@ public class GUI_MainMenu extends JFrame {
 							.addComponent(menuBar1, GroupLayout.DEFAULT_SIZE, 770, Short.MAX_VALUE)
 							.addComponent(statusBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addGroup(GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-								.addComponent(scrollBarImage, GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
+								.addComponent(scrollBarImage, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
 								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(scrollInfo, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))))
+								.addComponent(scrollInfo, GroupLayout.PREFERRED_SIZE, 272, GroupLayout.PREFERRED_SIZE))))
 			);
 			mainPanelLayout.setVerticalGroup(
 				mainPanelLayout.createParallelGroup()
@@ -373,10 +425,8 @@ public class GUI_MainMenu extends JFrame {
 						.addGap(0, 0, 0)
 						.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
 						.addGap(0, 0, 0)
-						.addGroup(mainPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-							.addGroup(mainPanelLayout.createSequentialGroup()
-								.addGap(0, 0, 0)
-								.addComponent(scrollInfo, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE))
+						.addGroup(mainPanelLayout.createParallelGroup()
+							.addComponent(scrollInfo, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
 							.addComponent(scrollBarImage, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE))
 						.addGap(0, 0, 0)
 						.addComponent(statusBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -407,6 +457,9 @@ public class GUI_MainMenu extends JFrame {
 	private JButton btnCalcularRuta;
 	private JLabel lblGridSize;
 	private JSpinner spnGridSize;
+	private JSlider sliZoom;
+	private JLabel lblZoom;
+	private JLabel lblZoomValue;
 	private JScrollPane scrollInfo;
 	private JTextArea txtInfo;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
@@ -442,6 +495,12 @@ public class GUI_MainMenu extends JFrame {
 
 	public void setInfoText(String txt) {		
 		txtInfo.setText(txt);
+	}
+
+
+	public void setSliderSize(double val) {		
+		sliZoom.setValue((int)val);
+		lblZoomValue.setText((int)val + "%");
 	}
 		
 	

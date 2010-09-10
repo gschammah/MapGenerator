@@ -11,7 +11,7 @@ public class Main_GUI {
 	 */
 	public static void main(String[] args) {
 		
-		MapMaker mapa = new MapMaker();		
+		MapMaker mapa = MapMaker.getInstance();		
 		Controller_MainMenu main = new Controller_MainMenu(mapa, new VistaMainMenu());		
 		main.cargarImagen("/home/gabriel/Documentos/tesis/examples/SpaceWandererExample/bitmaps/autolab.png");
 

@@ -1,24 +1,33 @@
 package ar.edu.uade.tesis_grupo13.vistas.ventanas;
 
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import ar.edu.uade.tesis_grupo13.MVCframework.vista.Vista;
+import ar.edu.uade.tesis_grupo13.modelo.MapMaker;
 import ar.edu.uade.tesis_grupo13.vistas.imagenes.componentes.MapaComponent;
 import ar.edu.uade.tesis_grupo13.vistas.ventanas.gui.GUI_MainMenu;
 
-public class VistaMainMenu extends Vista {
+public class VistaMainMenu extends Vista implements Observer {
 
-	private GUI_MainMenu vistaGrafica;	
+	private GUI_MainMenu vistaGrafica;
+
 
 	public VistaMainMenu() {
 
 		vistaGrafica = new GUI_MainMenu(this);
+		vistaGrafica.getImagePanel().setVistaPadre(this);
 		vistaGrafica.setTitle("AutoDriver");
 		vistaGrafica.setSize(1024, 768);
+		vistaGrafica.setExtendedState(vistaGrafica.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+	
 		this.centrarVista(vistaGrafica);	
 		vistaGrafica.setVisible(true);		
 	}
-	
+		
 	public void setImage(MapaComponent img) {
 		vistaGrafica.addLayer("base", img);
 	}		
@@ -53,6 +62,12 @@ public class VistaMainMenu extends Vista {
 
 	public boolean hasLayer(String layerName) {
 		return vistaGrafica.hasLayer(layerName);		
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		vistaGrafica.clearLayers();
+		vistaGrafica.setSliderSize(((MapMaker)getControlador().getModelo()).getConfig().zoom * 100);
 	}	
 
 }
