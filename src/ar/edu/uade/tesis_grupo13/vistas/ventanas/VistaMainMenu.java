@@ -1,10 +1,9 @@
 package ar.edu.uade.tesis_grupo13.vistas.ventanas;
 
-import java.awt.image.BufferedImage;
-
 import javax.swing.JOptionPane;
 
-import ar.edu.uade.tesis_grupo13.vistas.framework.vista.Vista;
+import ar.edu.uade.tesis_grupo13.MVCframework.vista.Vista;
+import ar.edu.uade.tesis_grupo13.vistas.imagenes.componentes.MapaComponent;
 import ar.edu.uade.tesis_grupo13.vistas.ventanas.gui.GUI_MainMenu;
 
 public class VistaMainMenu extends Vista {
@@ -16,11 +15,11 @@ public class VistaMainMenu extends Vista {
 		vistaGrafica = new GUI_MainMenu(this);
 		vistaGrafica.setTitle("AutoDriver");
 		vistaGrafica.setSize(1024, 768);
-		this.centrarVista(vistaGrafica);		
-		vistaGrafica.setVisible(true);
+		this.centrarVista(vistaGrafica);	
+		vistaGrafica.setVisible(true);		
 	}
 	
-	public void setImage(BufferedImage img) {
+	public void setImage(MapaComponent img) {
 		vistaGrafica.addLayer("base", img);
 	}		
 
@@ -32,7 +31,7 @@ public class VistaMainMenu extends Vista {
 		vistaGrafica.removeLayer(layer);	
 	}
 	
-	public void addLayer(String layer, BufferedImage img) {
+	public void addLayer(String layer, MapaComponent img) {
 		vistaGrafica.addLayer(layer, img);	
 	}
 
@@ -46,6 +45,14 @@ public class VistaMainMenu extends Vista {
 
 	public void showErrorPopup(String msg) {
 		JOptionPane.showMessageDialog(vistaGrafica, msg, "Error", JOptionPane.ERROR_MESSAGE);		
+	}
+
+	public void clearBuffer() {
+		vistaGrafica.getImagePanel().clearLayers();		
+	}
+
+	public boolean hasLayer(String layerName) {
+		return vistaGrafica.hasLayer(layerName);		
 	}	
 
 }

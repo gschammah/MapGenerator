@@ -12,7 +12,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.swing.GroupLayout;
@@ -24,16 +23,21 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.LayoutStyle;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.SoftBevelBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import ar.edu.uade.tesis_grupo13.controller.Controller_MainMenu;
-import ar.edu.uade.tesis_grupo13.grafos.CoordenadaSoftware;
+import ar.edu.uade.tesis_grupo13.modelo.CoordenadaSoftware;
+import ar.edu.uade.tesis_grupo13.vistas.imagenes.componentes.MapaComponent;
 import ar.edu.uade.tesis_grupo13.vistas.ventanas.VistaMainMenu;
 
 /**
@@ -107,15 +111,15 @@ public class GUI_MainMenu extends JFrame {
 	private void menuMostrarCaminoActionPerformed(ActionEvent e) {
 		((Controller_MainMenu)vistaPadre.getControlador()).togglePath(menuMostrarCamino.getState());
 	}
-
-	private void scrollBarImageMouseClicked(MouseEvent e) {
-		// TODO add your code here
+	
+	private void spnGridSizeStateChanged(ChangeEvent e) {
+		((Controller_MainMenu)vistaPadre.getControlador()).setGridSize((Integer) spnGridSize.getValue());
 	}
 	
 	
 	private void initComponents() {		
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-		panel1 = new JPanel();
+		mainPanel = new JPanel();
 		menuBar1 = new JMenuBar();
 		menu1 = new JMenu();
 		abrirMapa = new JMenuItem();
@@ -131,14 +135,17 @@ public class GUI_MainMenu extends JFrame {
 		scrollBarImage = new JScrollPane();
 		imagePanel = new GUI_MainPanel();
 		toolBar = new JToolBar();
+		panel1 = new JPanel();
 		btnCalcularRuta = new JButton();
+		lblGridSize = new JLabel();
+		spnGridSize = new JSpinner();
 		scrollInfo = new JScrollPane();
 		txtInfo = new JTextArea();
 
 		//======== this ========
 		setLayout(new GridLayout());
 
-		//======== panel1 ========
+		//======== mainPanel ========
 		{
 
 			//======== menuBar1 ========
@@ -259,12 +266,6 @@ public class GUI_MainMenu extends JFrame {
 
 			//======== scrollBarImage ========
 			{
-				scrollBarImage.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						scrollBarImageMouseClicked(e);
-					}
-				});
 
 				//---- imagePanel ----
 				imagePanel.addMouseListener(new MouseAdapter() {
@@ -286,15 +287,59 @@ public class GUI_MainMenu extends JFrame {
 			{
 				toolBar.setFloatable(false);
 
-				//---- btnCalcularRuta ----
-				btnCalcularRuta.setText("Calcular Ruta");
-				btnCalcularRuta.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						btnCalcularRutaActionPerformed(e);
-					}
-				});
-				toolBar.add(btnCalcularRuta);
+				//======== panel1 ========
+				{
+
+					//---- btnCalcularRuta ----
+					btnCalcularRuta.setText("Calcular Ruta");
+					btnCalcularRuta.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							btnCalcularRutaActionPerformed(e);
+						}
+					});
+
+					//---- lblGridSize ----
+					lblGridSize.setText("Tama\u00f1o Grilla:");
+
+					//---- spnGridSize ----
+					spnGridSize.setModel(new SpinnerNumberModel(10, 5, 50, 5));
+					spnGridSize.addChangeListener(new ChangeListener() {
+						@Override
+						public void stateChanged(ChangeEvent e) {
+							spnGridSizeStateChanged(e);
+						}
+					});
+
+					GroupLayout panel1Layout = new GroupLayout(panel1);
+					panel1.setLayout(panel1Layout);
+					panel1Layout.setHorizontalGroup(
+						panel1Layout.createParallelGroup()
+							.addGroup(panel1Layout.createParallelGroup()
+								.addGroup(panel1Layout.createSequentialGroup()
+									.addComponent(btnCalcularRuta, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
+									.addContainerGap(635, Short.MAX_VALUE)))
+							.addGroup(panel1Layout.createSequentialGroup()
+								.addGap(146, 146, 146)
+								.addComponent(lblGridSize)
+								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(spnGridSize, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
+								.addContainerGap(467, Short.MAX_VALUE))
+					);
+					panel1Layout.setVerticalGroup(
+						panel1Layout.createParallelGroup()
+							.addGroup(panel1Layout.createParallelGroup()
+								.addGroup(panel1Layout.createSequentialGroup()
+									.addComponent(btnCalcularRuta)
+									.addGap(3, 3, 3)))
+							.addGroup(panel1Layout.createSequentialGroup()
+								.addGroup(panel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+									.addComponent(lblGridSize, GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+									.addComponent(spnGridSize, GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE))
+								.addGap(3, 3, 3))
+					);
+				}
+				toolBar.add(panel1);
 			}
 
 			//======== scrollInfo ========
@@ -306,43 +351,43 @@ public class GUI_MainMenu extends JFrame {
 				scrollInfo.setViewportView(txtInfo);
 			}
 
-			GroupLayout panel1Layout = new GroupLayout(panel1);
-			panel1.setLayout(panel1Layout);
-			panel1Layout.setHorizontalGroup(
-				panel1Layout.createParallelGroup()
-					.addGroup(panel1Layout.createSequentialGroup()
+			GroupLayout mainPanelLayout = new GroupLayout(mainPanel);
+			mainPanel.setLayout(mainPanelLayout);
+			mainPanelLayout.setHorizontalGroup(
+				mainPanelLayout.createParallelGroup()
+					.addGroup(mainPanelLayout.createSequentialGroup()
 						.addGap(0, 0, 0)
-						.addGroup(panel1Layout.createParallelGroup()
+						.addGroup(mainPanelLayout.createParallelGroup()
 							.addComponent(toolBar, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 770, Short.MAX_VALUE)
 							.addComponent(menuBar1, GroupLayout.DEFAULT_SIZE, 770, Short.MAX_VALUE)
 							.addComponent(statusBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addGroup(panel1Layout.createSequentialGroup()
-								.addComponent(scrollBarImage, GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
-								.addGap(0, 0, 0)
+							.addGroup(GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+								.addComponent(scrollBarImage, GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
+								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 								.addComponent(scrollInfo, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))))
 			);
-			panel1Layout.setVerticalGroup(
-				panel1Layout.createParallelGroup()
-					.addGroup(panel1Layout.createSequentialGroup()
+			mainPanelLayout.setVerticalGroup(
+				mainPanelLayout.createParallelGroup()
+					.addGroup(mainPanelLayout.createSequentialGroup()
 						.addComponent(menuBar1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGap(0, 0, 0)
-						.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+						.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
 						.addGap(0, 0, 0)
-						.addGroup(panel1Layout.createParallelGroup()
-							.addGroup(panel1Layout.createSequentialGroup()
-								.addGap(3, 3, 3)
-								.addComponent(scrollBarImage, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE))
-							.addComponent(scrollInfo, GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE))
+						.addGroup(mainPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+							.addGroup(mainPanelLayout.createSequentialGroup()
+								.addGap(0, 0, 0)
+								.addComponent(scrollInfo, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE))
+							.addComponent(scrollBarImage, GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE))
 						.addGap(0, 0, 0)
 						.addComponent(statusBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 			);
 		}
-		add(panel1);
+		add(mainPanel);
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-	private JPanel panel1;
+	private JPanel mainPanel;
 	private JMenuBar menuBar1;
 	private JMenu menu1;
 	private JMenuItem abrirMapa;
@@ -358,7 +403,10 @@ public class GUI_MainMenu extends JFrame {
 	private JScrollPane scrollBarImage;
 	private GUI_MainPanel imagePanel;
 	private JToolBar toolBar;
+	private JPanel panel1;
 	private JButton btnCalcularRuta;
+	private JLabel lblGridSize;
+	private JSpinner spnGridSize;
 	private JScrollPane scrollInfo;
 	private JTextArea txtInfo;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
@@ -367,11 +415,15 @@ public class GUI_MainMenu extends JFrame {
 		return imagePanel;
 	}
 				
-	public void addLayer(String layerName, BufferedImage image) {
+	public void addLayer(String layerName, MapaComponent image) {
 		imagePanel.addLayer(layerName, image);
 		if (layerName.equals("path")) {
 			menuMostrarCamino.setState(true);
 		}
+	}
+	
+	public boolean hasLayer(String layerName) {
+		return imagePanel.hasLayer(layerName);
 	}
 
 	public void removeLayer(String layerName) {

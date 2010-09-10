@@ -1,6 +1,7 @@
 package ar.edu.uade.tesis_grupo13.vistas.ventanas.gui;
 
 import java.awt.Dimension;
+
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -15,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
+import ar.edu.uade.tesis_grupo13.vistas.imagenes.componentes.*;
+
 public class GUI_MainPanel extends JLabel implements Scrollable {
 		
 	private static final long serialVersionUID = 1L;
@@ -22,14 +25,20 @@ public class GUI_MainPanel extends JLabel implements Scrollable {
 	private int maxUnitIncrement = 1;
 	private Dimension imageSize;
 		
-	private HashMap<String, BufferedImage> layers = new HashMap<String, BufferedImage>();
-	private HashMap<String, ImageIcon> layerBuffer = new HashMap<String, ImageIcon>();
-	private String[] layerOrder = {"mapaGrillado", "base", "bordes", "grafo", "path", "startPoint", "endPoint", "grid"};		
-	private String[] noBuffer = {"startPoint", "endPoint"};
+	private HashMap<String, MapaComponent> layers;
+	private HashMap<String, ImageIcon> layerBuffer;
+	private String[] layerOrder = {"mapaGrillado", "base", "bordes", "grafo", "path", "startPoint", "endPoint", "grid"}; 		
+	private String[] noBuffer = {"startPoint", "endPoint"};	
+	
+	public GUI_MainPanel(){
+		super();
+		layers = new HashMap<String, MapaComponent>();
+		layerBuffer = new HashMap<String, ImageIcon>();	
+	}
 	
 	private String getLayerString() {								
 		
-		ArrayList<String> keys = new ArrayList<String>(layers.keySet());
+		ArrayList<String> keys = new ArrayList<String>(layers.keySet());		
 		
 		if (keys.size() > 0) { 
 		
@@ -45,8 +54,12 @@ public class GUI_MainPanel extends JLabel implements Scrollable {
 			return null;
 		}
 	}
+	
+	public void clearBuffer(){
+		layerBuffer.clear();		
+	}
 
-	private void redibujar() {
+	public void redibujar() {
 		
 		String layerString = getLayerString();
 		String layerStringNoBF = getLayerStringNoBuffer();
@@ -61,12 +74,12 @@ public class GUI_MainPanel extends JLabel implements Scrollable {
 		} else if (layers.size() > 0) {
 			
 			BufferedImage tempImg = new BufferedImage(imageSize.width, imageSize.height, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D gTemp = tempImg.createGraphics();
+			Graphics2D gTemp = tempImg.createGraphics();			
 			
 			for (String layer: layerOrder) {													
 				if (layers.containsKey(layer)) {		
-					gTemp.drawImage(layers.get(layer), 0, 0, null);
-					layerBuffer.put(layerString, new ImageIcon(layers.get(layer)));
+					gTemp.drawImage(layers.get(layer).getFromBuffer(), 0, 0, null);					
+					layerBuffer.put(layerString, new ImageIcon(layers.get(layer).getFromBuffer()));					
 				}					
 			}						
 			
@@ -88,8 +101,7 @@ public class GUI_MainPanel extends JLabel implements Scrollable {
 			StringBuilder result = new StringBuilder(keys.get(0));					
 			
 			for (int i=1; i<keys.size(); i++) {				
-				if (!noBF.contains(keys.get(i))) {
-					System.err.println(keys.get(i));
+				if (!noBF.contains(keys.get(i))) {					
 					result.append("+").append(keys.get(i));
 				}
 			}
@@ -101,11 +113,11 @@ public class GUI_MainPanel extends JLabel implements Scrollable {
 	}
 
 	public BufferedImage getLayer(String layerName) {
-		return layers.get(layerName);
+		return layers.get(layerName).getFromBuffer();
 	}
 
 	
-	public void addLayer(String layerName, BufferedImage image) {
+	public void addLayer(String layerName, MapaComponent image) {
 		if (layerName.equals("mapaGrillado")) {
 			imageSize = new Dimension(image.getWidth(), image.getHeight());			
 		}
@@ -167,8 +179,15 @@ public class GUI_MainPanel extends JLabel implements Scrollable {
 	}
 
 	public void clearLayers() {		
-		layerBuffer.clear();
-		layers.clear();
+		layerBuffer.clear();		
+		for (String key: layers.keySet()) {
+			layers.get(key).regenerar();
+		}		
+		redibujar();		
+	}
+
+	public boolean hasLayer(String layerName) {
+		return layers.containsKey(layerName);
 	}
 
 		

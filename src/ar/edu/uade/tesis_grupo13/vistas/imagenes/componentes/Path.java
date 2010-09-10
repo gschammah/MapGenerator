@@ -6,25 +6,45 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import ar.edu.uade.tesis_grupo13.config.Config;
 import ar.edu.uade.tesis_grupo13.grafos.Coordenada;
 
-public class Path {
+public class Path extends ImagenRenderizable{
+	
+	private ArrayList<Coordenada> camino;
+	private static Path instance;	
 
-	public static BufferedImage generar(int w, int h, ArrayList<Coordenada> camino) {				
+	public Path(int w, int h, ArrayList<Coordenada> path) {
+		super(w, h);
+		camino = path;
+		generar();
+	}
+	
+	public static Path getInstance(int w, int h, ArrayList<Coordenada> path) {		
+		instance = new Path(w, h, path);		
+		return instance;
+	}
+
+	public void generar() {			
 		
-		BufferedImage imagen = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage imagen = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = imagen.createGraphics();
 		
 		g.setColor(Color.GREEN);
 		g.setStroke(new BasicStroke(2));
 		
 		for (int i = 0; i < camino.size()-1; i++) {
-			g.drawLine((camino.get(i).getMatrizX() * 10) + 4, (camino.get(i).getMatrizY() * 10) + 4, 
-					   (camino.get(i+1).getMatrizX() * 10) + 4, (camino.get(i+1).getMatrizY() * 10) + 4);
+			g.drawLine((camino.get(i).getMatrizX() * Config.gridSize) + (Config.gridSize - 2)/2, (camino.get(i).getMatrizY() * Config.gridSize) + (Config.gridSize - 2)/2, 
+					   (camino.get(i+1).getMatrizX() * Config.gridSize) + (Config.gridSize - 2)/2, (camino.get(i+1).getMatrizY() * Config.gridSize) + (Config.gridSize - 2)/2);
 		}
 		
-		return imagen;
+		buffer = imagen;		
 	}
-
+		
+	@Override
+	public void regenerar() {
+		
+		super.regenerar();
+	}
 	
 }

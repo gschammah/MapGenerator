@@ -6,15 +6,14 @@
  *  
  */
 
-package ar.edu.uade.tesis_grupo13.vistas.framework.vista;
+package ar.edu.uade.tesis_grupo13.MVCframework.vista;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
-import ar.edu.uade.tesis_grupo13.vistas.framework.controlador.Controlador;
+import ar.edu.uade.tesis_grupo13.MVCframework.controlador.Controlador;
 
 public abstract class Vista {	
 	//ProxyModelo modelo;

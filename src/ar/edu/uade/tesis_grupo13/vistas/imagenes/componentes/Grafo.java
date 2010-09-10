@@ -4,14 +4,31 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import ar.edu.uade.tesis_grupo13.config.Config;
 import ar.edu.uade.tesis_grupo13.grafos.Coordenada;
 import ar.edu.uade.tesis_grupo13.grafos.Mapa;
 
-public class Grafo {
+public class Grafo extends ImagenRenderizable {
 	
-	public static BufferedImage generar(int w, int h, Mapa map) {
-						
-			BufferedImage imagen = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+	private Mapa map;
+	private static Grafo instance;	
+	
+	public Grafo(int w, int h, Mapa mapa) {
+		super(w, h);
+		map = mapa;	
+		generar();
+	}
+	
+	public static Grafo getInstance(int w, int h, Mapa map) {
+		if (instance ==  null) {
+			instance = new Grafo(w, h, map);			
+		}
+		return instance;
+	}
+
+	public void generar() {
+							
+			BufferedImage imagen = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g = imagen.createGraphics();
 			
 			boolean[][] matriz = map.getMatrizParedes();
@@ -21,7 +38,7 @@ public class Grafo {
 					
 					//Grafico vertice
 					g.setColor(Color.BLUE);
-					g.fillRect((x*10) + 3, (y*10) + 3, 5, 5);								
+					g.fillRect((x*Config.gridSize) + Config.gridSize / 2, (y*Config.gridSize) + Config.gridSize / 2, 2, 2);								
 					
 					for (Coordenada coord : map.getGrafo().getVertices(x, y)) {						
 						int x2 = coord.getMatrizX();
@@ -36,12 +53,16 @@ public class Grafo {
 							g.setColor(Color.RED);
 						}
 						
-						g.drawLine((x*10) + 5, (y*10) + 5, (((x2)*10) + 5), ((y2)*10) + 5);
+						g.drawLine((x*Config.gridSize) + Config.gridSize / 2, (y*Config.gridSize) + Config.gridSize / 2, (((x2)*Config.gridSize) + Config.gridSize / 2), ((y2)*Config.gridSize) + Config.gridSize / 2);
 					}																			
 				}
 			}
 			
-			return imagen;
+			buffer = imagen;				
 		}
+
+	public void setMap(Mapa mapa) {
+		this.map = mapa;
+	}
 
 }

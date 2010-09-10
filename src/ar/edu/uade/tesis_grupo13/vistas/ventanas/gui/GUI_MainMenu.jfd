@@ -22,15 +22,15 @@
          <class>org.jdesktop.layout.GroupLayout</class>
          <void method="setProperty">
           <string>$horizontalGroup</string>
-          <string>par l {seq l {space :p:0:p, par l {comp toolBar::t::770:x, comp menuBar1::l::770:x:2, comp statusBar::l:::x, seq l {comp scrollBarImage::::643:x, space :p:0:p, comp scrollInfo:::p:127:p}}}}</string>
+          <string>par l {seq l {space :p:0:p, par l {comp toolBar::t::770:x, comp menuBar1::l::770:x:2, comp statusBar::l:::x, seq t {comp scrollBarImage::::637:x, space :::p, comp scrollInfo:::p:127:p}}}}</string>
          </void>
          <void method="setProperty">
           <string>$verticalGroup</string>
-          <string>par l {seq {comp menuBar1:::p::p, space :p:0:p, comp toolBar:::p:24:p, space :p:0:p, par l {seq {space :p:3:p, comp scrollBarImage::::280:x}, comp scrollInfo::l::283:x}, space :p:0:p, comp statusBar:::p::p}}</string>
+          <string>par l {seq {comp menuBar1:::p::p, space :p:0:p, comp toolBar:::p:28:p, space :p:0:p, par t {seq {space :p:0:p, comp scrollInfo::::279:x}, comp scrollBarImage::::279:x}, space :p:0:p, comp statusBar:::p::p}}</string>
          </void>
         </object>
         <void property="name">
-         <string>panel1</string>
+         <string>mainPanel</string>
         </void>
         <void method="add">
          <object class="com.jformdesigner.model.FormContainer">
@@ -324,14 +324,6 @@
           <object class="com.jformdesigner.model.FormLayoutManager">
            <class>javax.swing.JScrollPane</class>
           </object>
-          <void method="addEvent">
-           <object class="com.jformdesigner.model.FormEvent">
-            <string>java.awt.event.MouseListener</string>
-            <string>mouseClicked</string>
-            <string>scrollBarImageMouseClicked</string>
-            <boolean>true</boolean>
-           </object>
-          </void>
           <void property="name">
            <string>scrollBarImage</string>
           </void>
@@ -375,21 +367,77 @@
            <string>toolBar</string>
           </void>
           <void method="add">
-           <object class="com.jformdesigner.model.FormComponent">
-            <string>javax.swing.JButton</string>
-            <void method="setProperty">
-             <string>text</string>
-             <string>Calcular Ruta</string>
-            </void>
+           <object class="com.jformdesigner.model.FormContainer">
+            <string>javax.swing.JPanel</string>
+            <object class="com.jformdesigner.model.FormLayoutManager">
+             <class>org.jdesktop.layout.GroupLayout</class>
+             <void method="setProperty">
+              <string>$horizontalGroup</string>
+              <string>par l {seq l {space :p:146:p, comp lblGridSize:::p::p, space :::p, comp spnGridSize:::p:52:p, space ::467:x}};par l {seq l {comp btnCalcularRuta:::p:131:p, space ::635:x}}</string>
+             </void>
+             <void method="setProperty">
+              <string>$verticalGroup</string>
+              <string>par l {seq l {par b {comp lblGridSize::b::20:x, comp spnGridSize::b::24:x}, space :p:3:p}};par l {seq l {comp btnCalcularRuta:::p::p:2, space :p:3:p}}</string>
+             </void>
+            </object>
             <void property="name">
-             <string>btnCalcularRuta</string>
+             <string>panel1</string>
             </void>
-            <void method="addEvent">
-             <object class="com.jformdesigner.model.FormEvent">
-              <string>java.awt.event.ActionListener</string>
-              <string>actionPerformed</string>
-              <string>btnCalcularRutaActionPerformed</string>
-              <boolean>true</boolean>
+            <void method="add">
+             <object class="com.jformdesigner.model.FormComponent">
+              <string>javax.swing.JButton</string>
+              <void method="setProperty">
+               <string>text</string>
+               <string>Calcular Ruta</string>
+              </void>
+              <void property="name">
+               <string>btnCalcularRuta</string>
+              </void>
+              <void method="addEvent">
+               <object class="com.jformdesigner.model.FormEvent">
+                <string>java.awt.event.ActionListener</string>
+                <string>actionPerformed</string>
+                <string>btnCalcularRutaActionPerformed</string>
+                <boolean>true</boolean>
+               </object>
+              </void>
+             </object>
+            </void>
+            <void method="add">
+             <object class="com.jformdesigner.model.FormComponent">
+              <string>javax.swing.JLabel</string>
+              <void method="setProperty">
+               <string>text</string>
+               <string>Tamaño Grilla:</string>
+              </void>
+              <void property="name">
+               <string>lblGridSize</string>
+              </void>
+             </object>
+            </void>
+            <void method="add">
+             <object class="com.jformdesigner.model.FormComponent">
+              <string>javax.swing.JSpinner</string>
+              <void method="setProperty">
+               <string>model</string>
+               <object class="javax.swing.SpinnerNumberModel">
+                <int>10</int>
+                <int>5</int>
+                <int>50</int>
+                <int>5</int>
+               </object>
+              </void>
+              <void property="name">
+               <string>spnGridSize</string>
+              </void>
+              <void method="addEvent">
+               <object class="com.jformdesigner.model.FormEvent">
+                <string>javax.swing.event.ChangeListener</string>
+                <string>stateChanged</string>
+                <string>spnGridSizeStateChanged</string>
+                <boolean>true</boolean>
+               </object>
+              </void>
              </object>
             </void>
            </object>

@@ -5,10 +5,10 @@
  * Ejercicio 14 - Persistencia simple (cliente)
  *  
  */
-package ar.edu.uade.tesis_grupo13.vistas.framework.controlador;
+package ar.edu.uade.tesis_grupo13.MVCframework.controlador;
 
-import ar.edu.uade.tesis_grupo13.vistas.framework.modelo.Modelo;
-import ar.edu.uade.tesis_grupo13.vistas.framework.vista.Vista;
+import ar.edu.uade.tesis_grupo13.MVCframework.modelo.Modelo;
+import ar.edu.uade.tesis_grupo13.MVCframework.vista.Vista;
 
 
 public abstract class Controlador {

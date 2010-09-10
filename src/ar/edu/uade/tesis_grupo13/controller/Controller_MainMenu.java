@@ -9,13 +9,17 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import ar.edu.uade.tesis_grupo13.MVCframework.controlador.Controlador;
+import ar.edu.uade.tesis_grupo13.config.Config;
 import ar.edu.uade.tesis_grupo13.grafos.Coordenada;
-import ar.edu.uade.tesis_grupo13.grafos.CoordenadaSoftware;
+import ar.edu.uade.tesis_grupo13.modelo.CoordenadaSoftware;
 import ar.edu.uade.tesis_grupo13.modelo.MapMaker;
 import ar.edu.uade.tesis_grupo13.tools.ProcesamientoImagenes;
-import ar.edu.uade.tesis_grupo13.vistas.framework.controlador.Controlador;
 import ar.edu.uade.tesis_grupo13.vistas.imagenes.GeneradorImagenes;
+import ar.edu.uade.tesis_grupo13.vistas.imagenes.componentes.Bordes;
 import ar.edu.uade.tesis_grupo13.vistas.imagenes.componentes.Box;
+import ar.edu.uade.tesis_grupo13.vistas.imagenes.componentes.Grafo;
+import ar.edu.uade.tesis_grupo13.vistas.imagenes.componentes.MapaGrillado;
 import ar.edu.uade.tesis_grupo13.vistas.ventanas.VistaMainMenu;
 
 public class Controller_MainMenu extends Controlador {
@@ -102,27 +106,24 @@ public class Controller_MainMenu extends Controlador {
 	public void setStartPoint(int x, int y) {
 		CoordenadaSoftware coord = new CoordenadaSoftware(x, y);
 		modelo.getGrafo().setStartPoint(coord);
-		vista.addLayer("startPoint", Box.generar(modelo.getImagen().getWidth(),
+		vista.addLayer("startPoint", Box.getInstance(modelo.getImagen().getWidth(),
 												 modelo.getImagen().getHeight(),
-												 coord.getMatrizX(), coord.getMatrizY(), Color.GREEN));		
+												 coord, Color.GREEN));		
 	}
 
 	public void setEndPoint(int x, int y) {
 		CoordenadaSoftware coord = new CoordenadaSoftware(x, y);
 		modelo.getGrafo().setEndPoint(coord);
-		vista.addLayer("endPoint", Box.generar(modelo.getImagen().getWidth(),
+		vista.addLayer("endPoint", Box.getInstance(modelo.getImagen().getWidth(),
 											   modelo.getImagen().getHeight(),
-											   coord.getMatrizX(), coord.getMatrizY(), Color.RED));
+											   coord, Color.RED));
 	}
 
 	public void calcularRuta() {
 		try {
 			ArrayList<Coordenada> camino = modelo.getGrafo().calcularCamino();		
 			vista.addLayer("path", generadorImagenes.getPath(camino));
-			
-			for (Coordenada coordenada : camino) {
-				System.out.println(coordenada.getMatrizX() + ", " + coordenada.getMatrizY());
-			}
+						
 		} catch (NullPointerException e) {
 			vista.showErrorPopup("Seleccione primero un punto de inicio y uno de destino");
 		}
@@ -131,6 +132,19 @@ public class Controller_MainMenu extends Controlador {
 	public void showInfo(int x, int y) {
 		CoordenadaSoftware coord = new CoordenadaSoftware(x, y);
 		vista.setInfoText(coord.toString());
+	}
+
+	public void setGridSize(int size) {		
+		Config.setGridSize(size);		
+		modelo.regenerarMatrizParedes();
+		((MapaGrillado)generadorImagenes.getMapaGrillado()).setMap(modelo.getGrafo().getMapa());
+		((Bordes)generadorImagenes.getBordes()).setMap(modelo.getGrafo().getMapa());
+		((Grafo)generadorImagenes.getGrafo()).setMap(modelo.getGrafo().getMapa());
+		if (vista.hasLayer("path")) {
+			calcularRuta();
+		}
+		generadorImagenes.clearBuffer();		
+		vista.clearBuffer();
 	}
 				
 }
