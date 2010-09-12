@@ -13,7 +13,7 @@ public class Main_GUI {
 		
 		MapMaker mapa = MapMaker.getInstance();		
 		Controller_MainMenu main = new Controller_MainMenu(mapa, new VistaMainMenu());		
-		main.cargarImagen("/home/gabriel/Documentos/tesis/examples/SpaceWandererExample/bitmaps/autolab.png");
+		main.cargarImagen("mapas/autolab.png");
 
 	}
 
