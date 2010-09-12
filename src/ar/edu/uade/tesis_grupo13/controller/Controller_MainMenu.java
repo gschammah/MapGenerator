@@ -10,7 +10,6 @@ import javax.imageio.ImageIO;
 
 import ar.edu.uade.tesis_grupo13.MVCframework.controlador.Controlador;
 import ar.edu.uade.tesis_grupo13.config.Config;
-import ar.edu.uade.tesis_grupo13.grafos.VertexList;
 import ar.edu.uade.tesis_grupo13.modelo.CoordenadaSoftware;
 import ar.edu.uade.tesis_grupo13.modelo.MapMaker;
 import ar.edu.uade.tesis_grupo13.tools.ProcesamientoImagenes;

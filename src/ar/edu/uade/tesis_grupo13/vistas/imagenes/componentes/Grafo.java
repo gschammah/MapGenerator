@@ -31,10 +31,7 @@ public class Grafo extends ImagenRenderizable {
 						
 			for (int y = 0; y < matriz.length; y++) {
 				for (int x = 0; x < matriz[0].length; x++) {				
-					
-					//Grafico vertice
-					g.setColor(Color.BLUE);
-					g.fillRect((x*config.gridSize) + (config.gridSize - 4)/ 2, (y*config.gridSize) + (config.gridSize - 4)/2, 4, 4);								
+																
 					
 					for (Coordenada coord : map.getGrafo().getVertices(x, y)) {						
 						int x2 = coord.getMatrizX();
@@ -52,7 +49,11 @@ public class Grafo extends ImagenRenderizable {
 						}
 						
 						g.drawLine((x*config.gridSize) + config.gridSize / 2, (y*config.gridSize) + config.gridSize / 2, (((x2)*config.gridSize) + config.gridSize / 2), ((y2)*config.gridSize) + config.gridSize / 2);
-					}																			
+					}
+					
+					//Grafico vertice
+					g.setColor(Color.BLUE);
+					g.fillRect((x*config.gridSize) + (config.gridSize - 4)/ 2, (y*config.gridSize) + (config.gridSize - 4)/2, 4, 4);
 				}
 			}
 			

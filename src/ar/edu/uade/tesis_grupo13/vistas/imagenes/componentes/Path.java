@@ -45,6 +45,6 @@ public class Path extends ImagenRenderizable{
 			super.repaint();
 		}
 	}
-			
+				
 	
 }
