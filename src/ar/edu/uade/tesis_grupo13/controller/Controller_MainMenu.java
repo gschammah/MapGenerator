@@ -10,8 +10,12 @@ import javax.imageio.ImageIO;
 
 import ar.edu.uade.tesis_grupo13.MVCframework.controlador.Controlador;
 import ar.edu.uade.tesis_grupo13.config.Config;
+import ar.edu.uade.tesis_grupo13.exceptions.RobotConnectionException;
+import ar.edu.uade.tesis_grupo13.grafos.Coordenada;
 import ar.edu.uade.tesis_grupo13.modelo.CoordenadaSoftware;
 import ar.edu.uade.tesis_grupo13.modelo.MapMaker;
+import ar.edu.uade.tesis_grupo13.modelo.RobotPlayer;
+import ar.edu.uade.tesis_grupo13.modelo.Settings;
 import ar.edu.uade.tesis_grupo13.tools.ProcesamientoImagenes;
 import ar.edu.uade.tesis_grupo13.vistas.imagenes.GeneradorImagenes;
 import ar.edu.uade.tesis_grupo13.vistas.imagenes.componentes.Box;
@@ -24,13 +28,14 @@ public class Controller_MainMenu extends Controlador {
 	private CoordenadaSoftware currentCoord;
 	private GeneradorImagenes generadorImagenes;
 	private Config config;
+	private RobotPlayer robot;
 
 	public Controller_MainMenu(MapMaker mapa, VistaMainMenu vista) {
-		super(mapa, vista);
+		super(mapa, vista);		
 		this.vista = vista;
 		this.modelo = mapa;
 		this.currentCoord = new CoordenadaSoftware(0, 0);
-		config = MapMaker.getInstance().getConfig();
+		config = MapMaker.getInstance().getConfig();		
 	}
 
 	public void salir() {
@@ -145,6 +150,29 @@ public class Controller_MainMenu extends Controlador {
 
 	public void setZoom(int value) {		
 		config.setZoom(value / 100d);
+	}
+
+	public void showSettings() {
+		Controller_Settings.getInstance().show();			
+	}
+
+	public void conectar() throws RobotConnectionException {
+		robot = new RobotPlayer((Settings) Controller_Settings.getInstance().getModelo());		
+		try {
+			Coordenada coord = robot.connect();
+			vista.setStatus("Conectado");
+			setStartPoint(coord.getMatrizX(), coord.getMatrizY());
+		} catch (RobotConnectionException e) {
+			vista.showErrorPopup(e.getMessage());
+			throw new RobotConnectionException(e.getMessage());			
+		}		
+		
+		//TODO: arreglar valores ejes (negativo y pos)
+	}
+	
+	public void desconectar() {
+		robot.disconnect();
+		vista.setStatus("Desconectado");
 	}
 				
 }

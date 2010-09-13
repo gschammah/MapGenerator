@@ -15,10 +15,16 @@ public abstract class Controlador {
 	Vista vista;
 	Modelo modelo;	
 	
+	public void setModelo(Modelo modelo) {
+		this.modelo = modelo;
+		this.modelo.setVista(vista);
+	}
+
 	protected Controlador(Modelo mod, Vista vis) {
-		vista = vis;
-		modelo = mod;
-		mod.setVista(vis);
+		vista = vis;		
+		if (mod != null) {
+			setModelo(mod);
+		}
 		vista.addControlador(this);
 	}	
 	

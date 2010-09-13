@@ -124,7 +124,7 @@
             </object>
             <void method="setProperty">
              <string>text</string>
-             <string>Opciones</string>
+             <string>Mostrar</string>
             </void>
             <void method="setProperty">
              <string>mnemonic</string>
@@ -138,7 +138,7 @@
               <string>javax.swing.JCheckBoxMenuItem</string>
               <void method="setProperty">
                <string>text</string>
-               <string>Mostrar grilla</string>
+               <string>Grilla</string>
               </void>
               <void method="setProperty">
                <string>accelerator</string>
@@ -166,7 +166,7 @@
               <string>javax.swing.JCheckBoxMenuItem</string>
               <void method="setProperty">
                <string>text</string>
-               <string>Ver Mapa Original</string>
+               <string>Mapa original</string>
               </void>
               <void method="setProperty">
                <string>accelerator</string>
@@ -194,7 +194,7 @@
               <string>javax.swing.JCheckBoxMenuItem</string>
               <void method="setProperty">
                <string>text</string>
-               <string>Mostrar grafo</string>
+               <string>Grafo</string>
               </void>
               <void method="setProperty">
                <string>accelerator</string>
@@ -222,7 +222,7 @@
               <string>javax.swing.JCheckBoxMenuItem</string>
               <void method="setProperty">
                <string>text</string>
-               <string>Mostrar bordes</string>
+               <string>Bordes</string>
               </void>
               <void method="setProperty">
                <string>accelerator</string>
@@ -250,7 +250,7 @@
               <string>javax.swing.JCheckBoxMenuItem</string>
               <void method="setProperty">
                <string>text</string>
-               <string>Mostrar Camino</string>
+               <string>Camino</string>
               </void>
               <void method="setProperty">
                <string>accelerator</string>
@@ -275,6 +275,89 @@
             </void>
            </object>
           </void>
+          <void method="add">
+           <object class="com.jformdesigner.model.FormContainer">
+            <string>javax.swing.JMenu</string>
+            <object class="com.jformdesigner.model.FormLayoutManager">
+             <class>javax.swing.JMenu</class>
+            </object>
+            <void method="setProperty">
+             <string>text</string>
+             <string>Herramientas</string>
+            </void>
+            <void method="setProperty">
+             <string>mnemonic</string>
+             <int>72</int>
+            </void>
+            <void property="name">
+             <string>menu3</string>
+            </void>
+            <void method="add">
+             <object class="com.jformdesigner.model.FormComponent">
+              <string>javax.swing.JCheckBoxMenuItem</string>
+              <void method="setProperty">
+               <string>text</string>
+               <string>Conectar</string>
+              </void>
+              <void method="setProperty">
+               <string>accelerator</string>
+               <object class="javax.swing.KeyStroke" method="getKeyStroke">
+                <int>113</int>
+                <int>0</int>
+                <boolean>false</boolean>
+               </object>
+              </void>
+              <void property="name">
+               <string>menuConectar</string>
+              </void>
+              <void method="addEvent">
+               <object class="com.jformdesigner.model.FormEvent">
+                <string>java.awt.event.ActionListener</string>
+                <string>actionPerformed</string>
+                <string>menuConectarActionPerformed</string>
+                <boolean>true</boolean>
+               </object>
+              </void>
+             </object>
+            </void>
+            <void method="add">
+             <object class="com.jformdesigner.model.FormComponent">
+              <string>javax.swing.JPopupMenu$Separator</string>
+              <void property="name">
+               <string>separator2</string>
+              </void>
+             </object>
+            </void>
+            <void method="add">
+             <object class="com.jformdesigner.model.FormComponent">
+              <string>javax.swing.JMenuItem</string>
+              <void method="setProperty">
+               <string>text</string>
+               <string>Configuración</string>
+              </void>
+              <void method="setProperty">
+               <string>accelerator</string>
+               <object class="javax.swing.KeyStroke" method="getKeyStroke">
+                <int>123</int>
+                <int>0</int>
+                <boolean>false</boolean>
+               </object>
+              </void>
+              <void property="name">
+               <string>menuSetup</string>
+              </void>
+              <void method="addEvent">
+               <object class="com.jformdesigner.model.FormEvent">
+                <string>java.awt.event.ActionListener</string>
+                <string>actionPerformed</string>
+                <string>menuSetupActionPerformed</string>
+                <boolean>true</boolean>
+               </object>
+              </void>
+             </object>
+            </void>
+           </object>
+          </void>
          </object>
         </void>
         <void method="add">
@@ -284,11 +367,11 @@
            <class>org.jdesktop.layout.GroupLayout</class>
            <void method="setProperty">
             <string>$horizontalGroup</string>
-            <string>par l {seq l {comp lblCoord:::p:87:p, space ::677:x}}</string>
+            <string>par l {seq l {comp lblCoord:::p:87:p, space ::586:x, comp lblStatus:::p::p}}</string>
            </void>
            <void method="setProperty">
             <string>$verticalGroup</string>
-            <string>par l {comp lblCoord::l::20:x}</string>
+            <string>par l {par b:l {comp lblCoord::b::20:x, comp lblStatus::b:p:17:p}}</string>
            </void>
           </object>
           <void method="setProperty">
@@ -313,6 +396,18 @@
             </void>
             <void property="name">
              <string>lblCoord</string>
+            </void>
+           </object>
+          </void>
+          <void method="add">
+           <object class="com.jformdesigner.model.FormComponent">
+            <string>javax.swing.JLabel</string>
+            <void method="setProperty">
+             <string>text</string>
+             <string>Desconectado</string>
+            </void>
+            <void property="name">
+             <string>lblStatus</string>
             </void>
            </object>
           </void>
@@ -381,7 +476,7 @@
              <class>org.jdesktop.layout.GroupLayout</class>
              <void method="setProperty">
               <string>$horizontalGroup</string>
-              <string>par l {seq l {space :p:146:p, comp lblGridSize:::p::p, space :::p, comp spnGridSize:::p:52:p, space u:::p, comp lblZoom:::p::p, space :::p, comp sliZoom:::p::p, space :::p, comp lblZoomValue:::p::p, space ::165:x}};par l {seq l {comp btnCalcularRuta:::p:131:p, space ::635:x}}</string>
+              <string>par l {seq l {space :p:146:p, comp lblGridSize:::p::p, space :::p, comp spnGridSize:::p:52:p, space u:::p, comp lblZoom:::p::p, space :::p, comp sliZoom:::p::p, space :::p, comp lblZoomValue:::p::p, space ::154:x}};par l {seq l {comp btnCalcularRuta:::p:131:p, space ::635:x}}</string>
              </void>
              <void method="setProperty">
               <string>$verticalGroup</string>

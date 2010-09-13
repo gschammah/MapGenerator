@@ -39,6 +39,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import ar.edu.uade.tesis_grupo13.controller.Controller_MainMenu;
+import ar.edu.uade.tesis_grupo13.exceptions.RobotConnectionException;
 import ar.edu.uade.tesis_grupo13.modelo.CoordenadaSoftware;
 import ar.edu.uade.tesis_grupo13.vistas.imagenes.componentes.MapaComponent;
 import ar.edu.uade.tesis_grupo13.vistas.ventanas.VistaMainMenu;
@@ -127,6 +128,25 @@ public class GUI_MainMenu extends JFrame {
 		((Controller_MainMenu)vistaPadre.getControlador()).setZoom(sliZoom.getValue());
 	}
 
+	private void menuSetupActionPerformed(ActionEvent e) {
+		((Controller_MainMenu)vistaPadre.getControlador()).showSettings();
+	}
+
+	private void menuConectarActionPerformed(ActionEvent e) {
+		if (menuConectar.getState()) {
+			try {
+				((Controller_MainMenu)vistaPadre.getControlador()).conectar();
+				menuConectar.setText("Desconectar");
+			} catch (RobotConnectionException ex) {
+				menuConectar.setState(false);
+			}
+			
+		} else {
+			((Controller_MainMenu)vistaPadre.getControlador()).desconectar();
+			menuConectar.setText("Conectar");
+		}
+	}
+
 	
 	
 	private void initComponents() {		
@@ -142,8 +162,12 @@ public class GUI_MainMenu extends JFrame {
 		menuMostrarGrafo = new JCheckBoxMenuItem();
 		menuMostrarBordes = new JCheckBoxMenuItem();
 		menuMostrarCamino = new JCheckBoxMenuItem();
+		menu3 = new JMenu();
+		menuConectar = new JCheckBoxMenuItem();
+		menuSetup = new JMenuItem();
 		statusBar = new JPanel();
 		lblCoord = new JLabel();
+		lblStatus = new JLabel();
 		scrollBarImage = new JScrollPane();
 		imagePanel = new GUI_MainPanel();
 		toolBar = new JToolBar();
@@ -197,11 +221,11 @@ public class GUI_MainMenu extends JFrame {
 
 				//======== menu2 ========
 				{
-					menu2.setText("Opciones");
+					menu2.setText("Mostrar");
 					menu2.setMnemonic('O');
 
 					//---- menuGrilla ----
-					menuGrilla.setText("Mostrar grilla");
+					menuGrilla.setText("Grilla");
 					menuGrilla.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_MASK));
 					menuGrilla.addActionListener(new ActionListener() {
 						@Override
@@ -212,7 +236,7 @@ public class GUI_MainMenu extends JFrame {
 					menu2.add(menuGrilla);
 
 					//---- menuMapaOriginal ----
-					menuMapaOriginal.setText("Ver Mapa Original");
+					menuMapaOriginal.setText("Mapa original");
 					menuMapaOriginal.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK));
 					menuMapaOriginal.addActionListener(new ActionListener() {
 						@Override
@@ -223,7 +247,7 @@ public class GUI_MainMenu extends JFrame {
 					menu2.add(menuMapaOriginal);
 
 					//---- menuMostrarGrafo ----
-					menuMostrarGrafo.setText("Mostrar grafo");
+					menuMostrarGrafo.setText("Grafo");
 					menuMostrarGrafo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_MASK));
 					menuMostrarGrafo.addActionListener(new ActionListener() {
 						@Override
@@ -234,7 +258,7 @@ public class GUI_MainMenu extends JFrame {
 					menu2.add(menuMostrarGrafo);
 
 					//---- menuMostrarBordes ----
-					menuMostrarBordes.setText("Mostrar bordes");
+					menuMostrarBordes.setText("Bordes");
 					menuMostrarBordes.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_MASK));
 					menuMostrarBordes.addActionListener(new ActionListener() {
 						@Override
@@ -245,7 +269,7 @@ public class GUI_MainMenu extends JFrame {
 					menu2.add(menuMostrarBordes);
 
 					//---- menuMostrarCamino ----
-					menuMostrarCamino.setText("Mostrar Camino");
+					menuMostrarCamino.setText("Camino");
 					menuMostrarCamino.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK));
 					menuMostrarCamino.addActionListener(new ActionListener() {
 						@Override
@@ -256,6 +280,36 @@ public class GUI_MainMenu extends JFrame {
 					menu2.add(menuMostrarCamino);
 				}
 				menuBar1.add(menu2);
+
+				//======== menu3 ========
+				{
+					menu3.setText("Herramientas");
+					menu3.setMnemonic('H');
+
+					//---- menuConectar ----
+					menuConectar.setText("Conectar");
+					menuConectar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+					menuConectar.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							menuConectarActionPerformed(e);
+						}
+					});
+					menu3.add(menuConectar);
+					menu3.addSeparator();
+
+					//---- menuSetup ----
+					menuSetup.setText("Configuraci\u00f3n");
+					menuSetup.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0));
+					menuSetup.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							menuSetupActionPerformed(e);
+						}
+					});
+					menu3.add(menuSetup);
+				}
+				menuBar1.add(menu3);
 			}
 
 			//======== statusBar ========
@@ -265,17 +319,23 @@ public class GUI_MainMenu extends JFrame {
 				//---- lblCoord ----
 				lblCoord.setText("x:0 y:0");
 
+				//---- lblStatus ----
+				lblStatus.setText("Desconectado");
+
 				GroupLayout statusBarLayout = new GroupLayout(statusBar);
 				statusBar.setLayout(statusBarLayout);
 				statusBarLayout.setHorizontalGroup(
 					statusBarLayout.createParallelGroup()
 						.addGroup(statusBarLayout.createSequentialGroup()
 							.addComponent(lblCoord, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap(677, Short.MAX_VALUE))
+							.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 586, Short.MAX_VALUE)
+							.addComponent(lblStatus))
 				);
 				statusBarLayout.setVerticalGroup(
 					statusBarLayout.createParallelGroup()
-						.addComponent(lblCoord, GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+						.addGroup(statusBarLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+							.addComponent(lblCoord, GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+							.addComponent(lblStatus, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE))
 				);
 			}
 
@@ -371,7 +431,7 @@ public class GUI_MainMenu extends JFrame {
 								.addComponent(sliZoom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 								.addComponent(lblZoomValue)
-								.addContainerGap(165, Short.MAX_VALUE))
+								.addContainerGap(154, Short.MAX_VALUE))
 					);
 					panel1Layout.setVerticalGroup(
 						panel1Layout.createParallelGroup()
@@ -448,8 +508,12 @@ public class GUI_MainMenu extends JFrame {
 	private JCheckBoxMenuItem menuMostrarGrafo;
 	private JCheckBoxMenuItem menuMostrarBordes;
 	private JCheckBoxMenuItem menuMostrarCamino;
+	private JMenu menu3;
+	private JCheckBoxMenuItem menuConectar;
+	private JMenuItem menuSetup;
 	private JPanel statusBar;
 	private JLabel lblCoord;
+	private JLabel lblStatus;
 	private JScrollPane scrollBarImage;
 	private GUI_MainPanel imagePanel;
 	private JToolBar toolBar;
@@ -501,6 +565,11 @@ public class GUI_MainMenu extends JFrame {
 	public void setSliderSize(double val) {		
 		sliZoom.setValue((int)val);
 		lblZoomValue.setText((int)val + "%");
+	}
+
+
+	public void setStatus(String status) {
+		lblStatus.setText(status);
 	}
 		
 	

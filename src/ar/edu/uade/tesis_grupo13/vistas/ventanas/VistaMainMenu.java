@@ -68,6 +68,10 @@ public class VistaMainMenu extends Vista implements Observer {
 	public void update(Observable o, Object arg) {
 		vistaGrafica.clearLayers();
 		vistaGrafica.setSliderSize(((MapMaker)getControlador().getModelo()).getConfig().zoom * 100);
+	}
+
+	public void setStatus(String status) {		
+		vistaGrafica.setStatus(status);
 	}	
 
 }

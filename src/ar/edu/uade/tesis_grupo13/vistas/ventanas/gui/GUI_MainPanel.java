@@ -69,10 +69,8 @@ public class GUI_MainPanel extends JLabel implements Scrollable {
 		setAlignmentX(CENTER_ALIGNMENT);
 		setAlignmentY(TOP_ALIGNMENT);
 				
-		if (layerBuffer.containsKey(layerString) && layerString.equals(layerStringNoBF)) {
-		
+		if (layerBuffer.containsKey(layerString) && layerString.equals(layerStringNoBF)) {		
 			setIcon(layerBuffer.get(layerString));
-			System.err.println("dibujando buffer: " + layerString);
 			
 		} else if (layers.size() > 0) {
 			
@@ -92,9 +90,7 @@ public class GUI_MainPanel extends JLabel implements Scrollable {
 			}						
 			
 			layerBuffer.put(layerStringNoBF, new ImageIcon(tempImg));
-			setIcon(layerBuffer.get(layerStringNoBF));
-			System.err.println("dibujando nuevo: " + layerStringNoBF);
-			
+			setIcon(layerBuffer.get(layerStringNoBF));						
 		}
 		
 	}
