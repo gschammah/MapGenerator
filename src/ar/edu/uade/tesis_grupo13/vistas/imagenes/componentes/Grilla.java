@@ -20,16 +20,29 @@ public class Grilla extends ImagenRenderizable {
 		return instance;
 	}
 
-	public void render() {					
+	public void render() {																
+				        
+	        BufferedImage imagen = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);	        
 	        
-	        BufferedImage imagen = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g = imagen.createGraphics();
-			g.setColor(Color.RED);
-	               
-	        for (int x=0; x<width; x += config.gridSize) {g.drawLine(x, 0, x, height);}
-	        for (int y=0; y<height; y += config.gridSize) {g.drawLine(0, y, width, y);}
+			Color red = Color.RED;			
+			g.setColor(new Color(red.getRed(), red.getGreen(), red.getBlue(), 180));													
+	
+			for (int x=0; x<=w; x += config.gridSize) {
+				g.drawLine(x, 0, x, h);
+				System.err.println(x);
+			}
+			for (int y=0; y<=h; y += config.gridSize) {
+				g.drawLine(0, y, w, y);								
+			}																	
 			
-	        buffer = imagen;	        			
+	        buffer = imagen;
+			
 	}		
+	
+	@Override
+	protected void updateAbsSize() {	
+		super.updateAbsSize();		
+	}
 	
 }

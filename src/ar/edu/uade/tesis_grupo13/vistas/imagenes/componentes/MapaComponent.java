@@ -9,5 +9,7 @@ public interface MapaComponent {
 	public BufferedImage getFromBuffer();
 	public int getWidth();
 	public int getHeight();
+	public int getOffsetLeft();
+	public int getOffsetTop();
 	
 }

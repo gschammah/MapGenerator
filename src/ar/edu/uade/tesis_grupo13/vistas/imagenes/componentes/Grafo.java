@@ -24,7 +24,7 @@ public class Grafo extends ImagenRenderizable {
 
 	public void render() {
 							
-			BufferedImage imagen = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+			BufferedImage imagen = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g = imagen.createGraphics();
 			
 			boolean[][] matriz = map.getMatrizParedes();

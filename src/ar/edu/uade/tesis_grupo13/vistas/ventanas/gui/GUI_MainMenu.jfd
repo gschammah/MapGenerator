@@ -367,7 +367,7 @@
            <class>org.jdesktop.layout.GroupLayout</class>
            <void method="setProperty">
             <string>$horizontalGroup</string>
-            <string>par l {seq l {comp lblCoord:::p:87:p, space ::586:x, comp lblStatus:::p::p}}</string>
+            <string>par l {seq t {comp lblCoord:::p:165:p, space ::508:x, comp lblStatus:::p::p}}</string>
            </void>
            <void method="setProperty">
             <string>$verticalGroup</string>

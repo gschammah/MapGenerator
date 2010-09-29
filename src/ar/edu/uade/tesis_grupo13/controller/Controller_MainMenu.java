@@ -33,9 +33,9 @@ public class Controller_MainMenu extends Controlador {
 	public Controller_MainMenu(MapMaker mapa, VistaMainMenu vista) {
 		super(mapa, vista);		
 		this.vista = vista;
-		this.modelo = mapa;
-		this.currentCoord = new CoordenadaSoftware(0, 0);
-		config = MapMaker.getInstance().getConfig();		
+		this.modelo = mapa;		
+		config = modelo.getConfig();
+		this.currentCoord = new CoordenadaSoftware(0, 0, modelo.getMapSize());
 	}
 
 	public void salir() {
@@ -62,6 +62,7 @@ public class Controller_MainMenu extends Controlador {
 		try {
 			BufferedImage imagen = ImageIO.read(new File(file));			
 			modelo.setImagen(ProcesamientoImagenes.jpg2Imagen(imagen));
+			_updateGridSize();
 			generadorImagenes = new GeneradorImagenes(imagen, modelo.getGrafo().getMapa());									
 			
 			vista.clearLayers();
@@ -72,6 +73,11 @@ public class Controller_MainMenu extends Controlador {
 		}					
 	}	
 	
+	private void _updateGridSize() {
+		//currentCoord.setWidth(modelo.getMatrizParedes()[0].length);
+		//currentCoord.setHeight(modelo.getMatrizParedes().length);		
+	}
+
 	public void toggleOriginal(boolean mostrar) {
 		if (mostrar) {
 			vista.removeLayer("mapaGrafo");
@@ -99,21 +105,21 @@ public class Controller_MainMenu extends Controlador {
 	}
 	
 
-	public CoordenadaSoftware getGridCoord(int x, int y) throws NullPointerException {										
+	public CoordenadaSoftware getGridCoord(int x, int y) throws NullPointerException {
 		currentCoord.setX(x);
 		currentCoord.setY(y);				
 		return currentCoord;
 	}
 
 	public void setStartPoint(int x, int y) {
-		CoordenadaSoftware coord = new CoordenadaSoftware(x, y);
+		CoordenadaSoftware coord = new CoordenadaSoftware(x, y, modelo.getMapSize());
 		modelo.getGrafo().setStartPoint(coord);
 		vista.removeLayer("path");
 		vista.addLayer("startPoint", Box.getInstance(coord, Color.GREEN));		
 	}
 
 	public void setEndPoint(int x, int y) {		
-		CoordenadaSoftware coord = new CoordenadaSoftware(x, y);
+		CoordenadaSoftware coord = new CoordenadaSoftware(x, y, modelo.getMapSize());
 		modelo.getGrafo().setEndPoint(coord);
 		vista.removeLayer("path");
 		vista.addLayer("endPoint", Box.getInstance(coord, Color.RED));
@@ -135,13 +141,18 @@ public class Controller_MainMenu extends Controlador {
 	}
 
 	public void showInfo(int x, int y) {
-		CoordenadaSoftware coord = new CoordenadaSoftware(x, y);		
-		vista.setInfoText(modelo.getGrafo().getVertices(coord).toString());
+		CoordenadaSoftware coord = new CoordenadaSoftware(x, y, modelo.getMapSize());		
+		vista.setInfoText(
+					modelo.getGrafo().getVertices(coord).toString()
+					+ modelo.getMatrizParedes()[coord.getMatrizY()][coord.getMatrizX()] 
+                    + "\n" + x + ", " + y				                                                
+		);
 	}
 
 	public void setGridSize(int size) {
-		generadorImagenes.clearBuffer();
-		config.setGridSize(size);						
+		generadorImagenes.clearBuffer();		
+		config.setGridSize(size);
+		_updateGridSize();
 	}
 
 	public void setZoomWheel(int unitsToScroll) {
@@ -159,12 +170,17 @@ public class Controller_MainMenu extends Controlador {
 	public void conectar() throws RobotConnectionException {
 		robot = new RobotPlayer((Settings) Controller_Settings.getInstance().getModelo());		
 		try {
+			
 			Coordenada coord = robot.connect();
+			modelo.setMapSize(modelo.getMapSize());			
 			vista.setStatus("Conectado");
 			setStartPoint(coord.getMatrizX(), coord.getMatrizY());
+			
 		} catch (RobotConnectionException e) {
-			vista.showErrorPopup(e.getMessage());
-			throw new RobotConnectionException(e.getMessage());			
+			
+			vista.showErrorPopup(e.getMessage());			
+			throw new RobotConnectionException(e.getMessage());
+			
 		}		
 		
 		//TODO: arreglar valores ejes (negativo y pos)

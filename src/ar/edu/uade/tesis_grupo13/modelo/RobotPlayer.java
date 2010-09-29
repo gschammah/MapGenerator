@@ -1,5 +1,7 @@
 package ar.edu.uade.tesis_grupo13.modelo;
 
+import java.awt.Dimension;
+
 import ar.edu.uade.tesis_grupo13.autodriver.Autodriver;
 import ar.edu.uade.tesis_grupo13.exceptions.RobotConnectionException;
 import ar.edu.uade.tesis_grupo13.grafos.Coordenada;
@@ -20,6 +22,10 @@ public class RobotPlayer {
 		robot.initialize();		
 		ad = new Autodriver(robot);
 		return ad.getLoc().getCoord();
+	}
+	
+	public Dimension getMapSize() {
+		return ad.getRobot().getMapData();		
 	}
 	
 	public void disconnect() {

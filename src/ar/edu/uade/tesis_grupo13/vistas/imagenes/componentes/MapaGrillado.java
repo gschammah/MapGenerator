@@ -23,8 +23,9 @@ public class MapaGrillado extends ImagenRenderizable {
 
 	public void render() {
 				
-		BufferedImage imagen = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage imagen = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = imagen.createGraphics();
+		
 
 		for (int y = 0; y < map.getMatrizParedes().length; y++) {
 			for (int x = 0; x < map.getMatrizParedes()[0].length; x++) {
@@ -36,7 +37,7 @@ public class MapaGrillado extends ImagenRenderizable {
 				}
 				g.fillRect((x * config.gridSize), (y * config.gridSize), config.gridSize, config.gridSize);
 			}
-		}
+		}				
 		
 		buffer = imagen; 			
 	}

@@ -326,9 +326,9 @@ public class GUI_MainMenu extends JFrame {
 				statusBar.setLayout(statusBarLayout);
 				statusBarLayout.setHorizontalGroup(
 					statusBarLayout.createParallelGroup()
-						.addGroup(statusBarLayout.createSequentialGroup()
-							.addComponent(lblCoord, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 586, Short.MAX_VALUE)
+						.addGroup(GroupLayout.Alignment.TRAILING, statusBarLayout.createSequentialGroup()
+							.addComponent(lblCoord, GroupLayout.PREFERRED_SIZE, 165, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 508, Short.MAX_VALUE)
 							.addComponent(lblStatus))
 				);
 				statusBarLayout.setVerticalGroup(
@@ -548,7 +548,7 @@ public class GUI_MainMenu extends JFrame {
 	}
 	
 	public void setCoord(CoordenadaSoftware coord) {
-		lblCoord.setText("X: " + coord.getMatrizX() + "; Y: " + coord.getMatrizY());		
+		lblCoord.setText("X: " + coord.getX() + "; Y: " + coord.getY());		
 	}
 
 

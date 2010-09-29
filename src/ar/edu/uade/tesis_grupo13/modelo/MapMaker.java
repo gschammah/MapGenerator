@@ -1,6 +1,7 @@
 package ar.edu.uade.tesis_grupo13.modelo;
 
 import java.awt.Color;
+import java.awt.Dimension;
 
 import ar.edu.uade.tesis_grupo13.MVCframework.modelo.Modelo;
 import ar.edu.uade.tesis_grupo13.MVCframework.vista.Vista;
@@ -17,6 +18,7 @@ public class MapMaker extends Modelo{
 	private Config config;
 	private VertexList camino;
 	private static MapMaker instance;
+	private Dimension mapSize = new Dimension(200, 200);
 	
 	public MapMaker() {}
 	
@@ -44,9 +46,10 @@ public class MapMaker extends Modelo{
 	private void generarMatrizParedes() {
 		
 		int w = imagen.getWidth();
-		int h = imagen.getHeight();
+		int h = imagen.getHeight();				
 		
-		matrizParedes = new boolean[(int)Math.ceil(h/config.gridSize)+1][(int)Math.ceil(w/config.gridSize)+1];		 				
+		matrizParedes = new boolean[(int)Math.ceil(h/config.gridSize)+1][(int)Math.ceil(w/config.gridSize)+1];
+		System.out.println(matrizParedes[0].length + ", " + matrizParedes.length);
 
 		for (int i = 0; i < h; i++) {
 			for (int j = 0; j < w; j++) {
@@ -58,7 +61,8 @@ public class MapMaker extends Modelo{
 				}
 				
 			}
-		}			
+		}
+
 	}
 	
 	public boolean[][] getMatrizParedes() {
@@ -95,6 +99,15 @@ public class MapMaker extends Modelo{
 	public VertexList getCamino() {
 		return this.camino;
 	}
+
+	public Dimension getMapSize() {
+		return mapSize;
+	}
+
+	public void setMapSize(Dimension mapSize) {
+		this.mapSize = mapSize;
+	}
+
 	
 
 	

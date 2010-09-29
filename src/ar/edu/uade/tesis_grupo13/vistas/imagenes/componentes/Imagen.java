@@ -21,6 +21,13 @@ public class Imagen extends ImagenRenderizable {
 		}
 		return instance;
 	}
+	
+	@Override
+	protected void updateAbsSize() {	
+		super.updateAbsSize();
+		offsetLeft = 0;
+		offsetTop = 0;
+	}
 		
 
 }

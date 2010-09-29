@@ -23,7 +23,7 @@ public class Path extends ImagenRenderizable{
 
 	public void render() {			
 		
-		BufferedImage imagen = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage imagen = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = imagen.createGraphics();
 		VertexList camino = this.config.getModelo().getCamino();
 		

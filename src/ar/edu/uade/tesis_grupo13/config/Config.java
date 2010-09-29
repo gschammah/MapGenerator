@@ -11,6 +11,8 @@ public class Config extends Observable {
 	public double zoom = 1;
 	public static Config instance;
 	private MapMaker modelo;
+	public int startLat;
+	public int startLong;
 
 
 	public Config(MapMaker mapMaker) {
